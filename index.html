@@ -124,7 +124,7 @@
 </head>
 <body class="bg-gray-100 transition-colors">
 
-    <div class="container bg-white shadow-xl rounded-2xl min-h-screen flex flex-col">
+    <div class="container bg-white shadow-xl min-h-screen flex flex-col">
         <!-- Navigatsiya paneli -->
         <header class="p-4 bg-white rounded-t-2xl shadow-sm sticky top-0 z-10 flex justify-between items-center">
             <h1 class="text-3xl font-bold" style="color:#ffc107;">Yo'ldaTaxi</h1>
@@ -145,34 +145,37 @@
             </div>
         </header>
         
-
+      
 <nav class="flex flex-nowrap justify-between items-center p-3 w-full gap-3">
-    <!-- FAQ Button -->
-    <button id="faqBtn" class="flex-1 min-w-[100px] max-w-[33%] flex items-center justify-center gap-2 py-3 px-3 text-sm md:text-base rounded-2xl font-semibold transition-all duration-300 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400 text-gray-900 shadow-md hover:scale-105 hover:shadow-lg">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16h6m2 2H7a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2z" />
+    <button id="faqBtn" class="flex-1 min-w-[100px] max-w-[33%] flex flex-col items-center justify-center gap-1.5 py-4 px-2 text-sm md:text-base rounded-2xl font-semibold transition-all duration-300 bg-[#ffd000] text-black shadow-md hover:scale-105 hover:shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 stroke-current text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.09 11.25a3 3 0 011.08 3.54L10 16" />
+            <path d="M12.01 19.5V20" />
+            <path d="M11 15h.01" />
+            <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <path d="M12 8v2" />
         </svg>
-        Savollar
+        <span class="text-black">Savollar</span>
     </button>
 
-    <!-- Promo Button -->
-    <button id="promoBtn" class="flex-1 min-w-[100px] max-w-[33%] flex items-center justify-center gap-2 py-3 px-3 text-sm md:text-base rounded-2xl font-semibold transition-all duration-300 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400 text-gray-900 shadow-md hover:scale-105 hover:shadow-lg">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 11h.01M7 15h.01M10 7h8a2 2 0 012 2v8a2 2 0 01-2 2h-8a2 2 0 01-2-2V9a2 2 0 012-2z" />
+    <button id="promoBtn" class="flex-1 min-w-[100px] max-w-[33%] flex flex-col items-center justify-center gap-1.5 py-4 px-2 text-sm md:text-base rounded-2xl font-semibold transition-all duration-300 bg-[#ffd000] text-black shadow-md hover:scale-105 hover:shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 stroke-current text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+            <path d="M3 6h18" />
+            <path d="M16 10a4 4 0 01-8 0" />
         </svg>
-        Aksiya
+        <span class="text-black">Aksiya</span>
     </button>
 
-    <!-- Guruh Button -->
-    <button id="groupBtn" class="flex-1 min-w-[100px] max-w-[33%] flex items-center justify-center gap-2 py-3 px-3 text-sm md:text-base rounded-2xl font-semibold transition-all duration-300 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400 text-gray-900 shadow-md hover:scale-105 hover:shadow-lg">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M15 7a4 4 0 11-8 0 4 4 0 018 0z" />
+    <button id="groupBtn" class="flex-1 min-w-[100px] max-w-[33%] flex flex-col items-center justify-center gap-1.5 py-4 px-2 text-sm md:text-base rounded-2xl font-semibold transition-all duration-300 bg-[#ffd000] text-black shadow-md hover:scale-105 hover:shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 stroke-current text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+            <circle cx="8.5" cy="7" r="4" />
+            <path d="M20 8v6M23 11h-6" />
         </svg>
-        Guruh
+        <span class="text-black">Guruh</span>
     </button>
 </nav>
-
-
 
 
 
