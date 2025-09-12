@@ -46,9 +46,15 @@
             color: #f3f4f6;
         }
         .dark .bg-white, .dark .bg-gray-50 {
-            background-color: #252525;
+            background-color: #0c111d;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
         }
+      
+        .dark .bg-white1, .dark .bg-gray1 {
+            background-color: #161b26;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+      
         .dark .bg-gray-200 {
             background-color: #2e3a50;
             color: #d1d5db;
@@ -93,8 +99,6 @@
         .dark .promo-card-icon {
             color: #fde047;
         }
-      
-              /* Guruh kartochkalari uchun stil */
         .group-card {
             position: relative;
             overflow: hidden;
@@ -128,21 +132,18 @@
         <!-- Navigatsiya paneli -->
         <header class="p-4 bg-white rounded-t-2xl shadow-sm sticky top-0 z-10 flex justify-between items-center">
             <h1 class="text-3xl font-bold" style="color:#ffc107;">Yo'ldaTaxi</h1>
-            <div class="flex items-center space-x-2">
-                <!-- Tun/kun rejimini almashtirish tugmasi -->
-                <button id="themeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 transition-colors relative w-10 h-10 flex items-center justify-center">
-                    <!-- Moon Icon (Dark Mode) -->
-                    <svg id="moonIcon" class="w-6 h-6 text-gray-700 dark:text-gray-300 transition-transform hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 0112.21 3 7 7 0 0021 12.79z"></path>
-                    </svg>
-                
-                    <!-- Sun Icon (Light Mode) -->
-                    <svg id="sunIcon" class="w-6 h-6 text-gray-700 dark:text-gray-300 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12" cy="12" r="5" stroke-linecap="round" stroke-linejoin="round"></circle>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
-                    </svg>
-                </button>
-            </div>
+<div class="flex items-center space-x-2">
+    <button id="themeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 transition-colors relative w-10 h-10 flex items-center justify-center">
+        <svg id="moonIcon" class="w-6 h-6 text-gray-700 dark:text-gray-300 transition-transform hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1112.21 3 7 7 0 0021 12.79z"></path>
+        </svg>
+    
+        <svg id="sunIcon" class="w-6 h-6 text-gray-700 dark:text-gray-300 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="5" stroke-linecap="round" stroke-linejoin="round"></circle>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+        </svg>
+    </button>
+</div>
         </header>
         
       
@@ -185,7 +186,7 @@
     <h2 class="text-2xl font-bold mb-6 text-center">Tez-tez beriladigan savollar</h2>
     <div class="space-y-4">
         <!-- Savol 1: Qanday viloyatlarga taxi buyurtma berish mumkin? -->
-        <details class="bg-gray-50 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
+        <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
             <summary class="flex items-center justify-between text-lg font-medium">
                 <span class="flex items-center">
                     🚖
@@ -199,7 +200,7 @@
         </details>
         
         <!-- Savol 2: Taxi buyurtmasini bekor qilish mumkinmi? -->
-        <details class="bg-gray-50 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
+        <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
             <summary class="flex items-center justify-between text-lg font-medium">
                 <span class="flex items-center">
                     ❌
@@ -213,7 +214,7 @@
         </details>
 
         <!-- Savol 3: Do‘konim bor, doimiy pochta xizmatidan foydalanish mumkinmi? -->
-        <details class="bg-gray-50 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
+        <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
             <summary class="flex items-center justify-between text-lg font-medium">
                 <span class="flex items-center">
                     🏪
@@ -227,7 +228,7 @@
         </details>
 
         <!-- Savol 4: Buyurtma berdim, haydovchi qachon bog‘lanadi? -->
-        <details class="bg-gray-50 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
+        <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
             <summary class="flex items-center justify-between text-lg font-medium">
                 <span class="flex items-center">
                     ⏱️
@@ -241,7 +242,7 @@
         </details>
 
         <!-- Savol 5: Taksi narxlari qancha bo'ladi? -->
-        <details class="bg-gray-50 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
+        <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
             <summary class="flex items-center justify-between text-lg font-medium">
                 <span class="flex items-center">
                     💰
@@ -255,7 +256,7 @@
         </details>
 
         <!-- Savol 6: Taxida qolib ketgan buyumlarni qanday qaytarib olish mumkin? -->
-        <details class="bg-gray-50 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
+        <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
             <summary class="flex items-center justify-between text-lg font-medium">
                 <span class="flex items-center">
                     🎒
@@ -269,7 +270,7 @@
         </details>
 
         <!-- Savol 7: Safar uchun mashinani qanday tanlash mumkin? -->
-        <details class="bg-gray-50 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
+        <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
             <summary class="flex items-center justify-between text-lg font-medium">
                 <span class="flex items-center">
                     🚗
@@ -283,7 +284,7 @@
         </details>
 
         <!-- Savol 8: YoldaTaxi qaysi viloyatlarda ishlaydi? -->
-        <details class="bg-gray-50 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
+        <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
             <summary class="flex items-center justify-between text-lg font-medium">
                 <span class="flex items-center">
                     📍
@@ -297,7 +298,7 @@
         </details>
 
         <!-- Savol 9: Haydovchiga qanday shikoyat qilsa bo‘ladi? -->
-        <details class="bg-gray-50 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
+        <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
             <summary class="flex items-center justify-between text-lg font-medium">
                 <span class="flex items-center">
                     ⚠️
@@ -311,7 +312,7 @@
         </details>
 
         <!-- Savol 10: Haydovchi meni uyimdan olib ketadimi? -->
-        <details class="bg-gray-50 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
+        <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
             <summary class="flex items-center justify-between text-lg font-medium">
                 <span class="flex items-center">
                     🏠
