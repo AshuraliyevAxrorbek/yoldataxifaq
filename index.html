@@ -435,9 +435,9 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
-    const API_BASE_URL = "http://localhost:8000"; // Backend manzilingiz
+    // API server manzili. Ngrok manzilini bu yerga qo'shing.
+    const API_BASE_URL = "http://localhost:8000";
 
-    // --- Elementlarni tanlash ---
     const navButtons = document.querySelectorAll('.nav-btn');
     const sections = document.querySelectorAll('.section');
     const promoBtnCheck = document.getElementById('promoBtnCheck');
@@ -459,48 +459,43 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentPage = 0;
     const itemsPerPage = 15;
     let referralData = [];
+    let userId = null;
 
-    // --- Foydalanuvchi ID ni URL query yoki Telegram WebApp orqali olish ---
-    function getQueryParam(param) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(param);
-    }
-
-    let userId = getQueryParam('user_id');
-
-    if (!userId && window.Telegram?.WebApp?.initDataUnsafe?.user?.id) {
+    if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id) {
         userId = window.Telegram.WebApp.initDataUnsafe.user.id;
     }
 
-    // --- Foydalanuvchi ma'lumotlarini backenddan olish ---
-    async function fetchUserData(userId) {
-        if (!userId) return { error: "Foydalanuvchi ID topilmadi. User_id URL queryda yoki Telegram WebApp orqali uzatilmagan." };
+    async function fetchUserData(id) {
+        if (!id) {
+            return { error: "Foydalanuvchi ma'lumotlari mavjud emas." };
+        }
         try {
-            const res = await fetch(`${API_BASE_URL}/user/${userId}`);
+            const res = await fetch(`${API_BASE_URL}/user/${id}`);
             if (!res.ok) {
-                const errorText = await res.json();
-                return { error: errorText.detail || `Xato: Ma'lumot topilmadi (${res.status})` };
+                const errorData = await res.json();
+                return { error: errorData.detail || `Xato: Ma'lumot topilmadi (${res.status})` };
             }
             return await res.json();
         } catch (err) {
-            return { error: `Tarmoq xatosi: ${err.message}` };
+            return { error: `Tarmoq xatosi: ${err.message}. Serverga ulanib bo'lmadi.` };
         }
     }
 
-    // --- Top referral list ---
-    async function fetchReferralData() {
+    async function fetchAllReferralData() {
         try {
             const res = await fetch(`${API_BASE_URL}/top-referrals`);
-            if (!res.ok) return [];
+            if (!res.ok) {
+                console.error("Referral ma'lumotlarini olishda xato.");
+                return [];
+            }
             const data = await res.json();
             return data.sort((a, b) => b.points - a.points);
         } catch (err) {
-            console.error("Network error fetching referral data:", err);
+            console.error("Tarmoq xatosi: referral ma'lumotlarini yuklab bo'lmadi:", err);
             return [];
         }
     }
 
-    // --- Referral list render qilish ---
     function renderReferralList(data, page) {
         referalList.innerHTML = '';
         const start = page * itemsPerPage;
@@ -536,22 +531,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // --- Foydalanuvchi ma'lumotlarini yuklash ---
     const user = await fetchUserData(userId);
     if (user && user.invite_link) {
         referalLinkInput.value = user.invite_link;
         referalLinkInput.disabled = true;
     } else {
-        referalLinkInput.value = user.error || "Havola topilmadi.";
+        referalLinkInput.value = user.error || "Referal havolasi topilmadi. Faqat Telegram Web App orqali foydalanuvchi ma'lumotlari yuklanadi.";
         referalLinkInput.disabled = true;
         copyBtn.disabled = true;
         shareBtn.disabled = true;
     }
 
-    referralData = await fetchReferralData();
+    referralData = await fetchAllReferralData();
     renderReferralList(referralData, currentPage);
 
-    // --- Navigation tugmalari ---
     navButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
             const sectionId = e.currentTarget.id.replace('Btn', 'Section');
@@ -562,7 +555,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    // --- Promo code ---
     promoBtnCheck.addEventListener('click', () => {
         const promoCode = promoInput.value.trim().toLowerCase();
         if (promoCode === 'yolda123') {
@@ -574,11 +566,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // --- Copy / Share ---
     copyBtn.addEventListener('click', () => {
-        referalLinkInput.select();
         navigator.clipboard.writeText(referalLinkInput.value).then(() => {
             alert("✅ Havola nusxalandi!");
+        }).catch(err => {
+            alert("Nusxalashda xato: " + err);
         });
     });
 
@@ -590,14 +582,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 url: referalLinkInput.value
             }).catch(console.error);
         } else {
-            referalLinkInput.select();
             navigator.clipboard.writeText(referalLinkInput.value).then(() => {
                 alert("✅ Havola nusxalandi!");
+            }).catch(err => {
+                alert("Ulashishda xato: " + err);
             });
         }
     });
 
-    // --- Pagination ---
     nextPageBtn.addEventListener('click', () => {
         if ((currentPage + 1) * itemsPerPage < referralData.length) {
             currentPage++;
@@ -612,7 +604,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // --- FAQ Accordion ---
     faqItems.forEach(item => {
         item.addEventListener('toggle', () => {
             const icon = item.querySelector('.faq-icon');
@@ -626,7 +617,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    // --- Theme toggle ---
     const currentTheme = localStorage.getItem('theme');
     if (currentTheme === 'dark') {
         document.documentElement.classList.add('dark');
@@ -646,13 +636,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // --- Default section ---
     document.getElementById('faqBtn').classList.add('active');
     document.getElementById('faqSection').classList.add('active');
 });
 </script>
-
-
-
 </body>
 </html>
