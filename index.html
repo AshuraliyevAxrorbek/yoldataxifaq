@@ -435,10 +435,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
-    // API server manzili (Bu yerga sizning serveringiz joylashgan manzilni kiriting)
-    // Serveringizni brauzer orqali kirish mumkin bo'lgan ommaviy manzilga o'tkazganingizga ishonch hosil qiling
-    // Masalan: https://yoldataxi-api.onrender.com yoki https://<ngrok_id>.ngrok.io
-    const API_BASE_URL = "http://localhost:8000"; 
+    const API_BASE_URL = "http://localhost:8000"; // Backend manzilingiz
 
     const navButtons = document.querySelectorAll('.nav-btn');
     const sections = document.querySelectorAll('.section');
@@ -449,48 +446,44 @@ document.addEventListener('DOMContentLoaded', async () => {
     const sunIcon = document.getElementById('sunIcon');
     const moonIcon = document.getElementById('moonIcon');
     const copyBtn = document.getElementById('copyBtn');
+    const shareBtn = document.getElementById('shareBtn');
     const referalLinkInput = document.getElementById('referalLink');
     const referalList = document.getElementById('referalList');
     const nextPageBtn = document.getElementById('nextPageBtn');
     const prevPageBtn = document.getElementById('prevPageBtn');
     const paginationButtonsContainer = document.getElementById('paginationButtons');
     const noDataMessage = document.getElementById('noDataMessage');
-    const shareBtn = document.getElementById('shareBtn');
     const faqItems = document.querySelectorAll('.faq-item');
 
     let currentPage = 0;
     const itemsPerPage = 15;
     let referalData = [];
-    let telegramId = null;
 
-    // Telegram Web App muhitida ekanligini tekshirish
-    const isTelegramWebApp = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe;
+    // --- Query param orqali user_id olish ---
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
 
-    if (isTelegramWebApp) {
-        const userData = window.Telegram.WebApp.initDataUnsafe.user;
-        if (userData && userData.id) {
-            telegramId = userData.id;
+    const userId = getQueryParam('user_id');
+
+    // --- Foydalanuvchi ma'lumotlarini backenddan olish ---
+    async function fetchUserData(userId) {
+        if (!userId) return { error: "Foydalanuvchi ma'lumotlari mavjud emas." };
+        try {
+            const res = await fetch(`${API_BASE_URL}/user/${userId}`);
+            if (!res.ok) return { error: `Xato: Ma'lumot topilmadi (${res.status})` };
+            return await res.json();
+        } catch (err) {
+            return { error: `Tarmoq xatosi: ${err.message}` };
         }
     }
 
-    // --- Functions ---
-    function showSection(sectionId) {
-        sections.forEach(s => s.classList.remove('active'));
-        document.getElementById(sectionId).classList.add('active');
-    }
-
-    function activateButton(buttonId) {
-        navButtons.forEach(btn => btn.classList.remove('active'));
-        document.getElementById(buttonId).classList.add('active');
-    }
-
+    // --- Top referral list ---
     async function fetchReferralData() {
         try {
             const res = await fetch(`${API_BASE_URL}/top-referrals`);
-            if (!res.ok) {
-                console.error("Failed to fetch referral data");
-                return [];
-            }
+            if (!res.ok) return [];
             const data = await res.json();
             return data.sort((a, b) => b.points - a.points);
         } catch (err) {
@@ -499,22 +492,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    async function fetchUserData(userId) {
-        if (!userId) {
-            return { error: "Foydalanuvchi ma'lumotlari mavjud emas." };
-        }
-        try {
-            const res = await fetch(`${API_BASE_URL}/user/${userId}`);
-            if (!res.ok) {
-                return { error: `Xato: Ma'lumot topilmadi. HTTP status: ${res.status}` };
-            }
-            const data = await res.json();
-            return data;
-        } catch (err) {
-            return { error: `Tarmoq xatosi: ${err.message}. Serverga ulanib bo'lmadi.` };
-        }
-    }
-
+    // --- Render referal list ---
     function renderReferalList(data, page) {
         referalList.innerHTML = '';
         const start = page * itemsPerPage;
@@ -526,7 +504,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             paginationButtonsContainer.classList.add('hidden');
             return;
         }
-
         noDataMessage.classList.add('hidden');
 
         paginatedItems.forEach((user, index) => {
@@ -551,31 +528,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // --- Initial load logic ---
-    const user = await fetchUserData(telegramId);
+    // --- Load initial data ---
+    const user = await fetchUserData(userId);
     if (user && user.invite_link) {
         referalLinkInput.value = user.invite_link;
-        referalLinkInput.disabled = true; // Inputni o'chirish
+        referalLinkInput.disabled = true;
     } else {
-        if (!isTelegramWebApp) {
-            referalLinkInput.value = "Referal havolasini olish uchun Telegram mini app orqali kiring.";
-            copyBtn.disabled = true;
-            shareBtn.disabled = true;
-        } else {
-            referalLinkInput.value = user.error || "Havola topilmadi yoki ma'lumotlar bazasida yo'qsiz.";
-        }
+        referalLinkInput.value = user?.error || "Havola topilmadi.";
+        copyBtn.disabled = true;
+        shareBtn.disabled = true;
     }
 
     referalData = await fetchReferralData();
     renderReferalList(referalData, currentPage);
 
-    // --- Event Listeners ---
-    navButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            const targetBtn = e.currentTarget;
-            const sectionId = targetBtn.id.replace('Btn', 'Section');
-            activateButton(targetBtn.id);
-            showSection(sectionId);
+    // --- Event listeners ---
+    navButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const sectionId = e.currentTarget.id.replace('Btn', 'Section');
+            navButtons.forEach(b => b.classList.remove('active'));
+            e.currentTarget.classList.add('active');
+            sections.forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
         });
     });
 
@@ -599,14 +573,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     shareBtn.addEventListener('click', () => {
         if (navigator.share) {
             navigator.share({
-                title: 'Yo\'ldaTaxi',
-                text: 'Yo\'ldaTaxi ilovasini sinab ko\'ring! Bu bilan safarlaringiz yanada oson va arzon bo\'ladi.',
+                title: "Yo'ldaTaxi",
+                text: "Yo'ldaTaxi ilovasini sinab ko'ring!",
                 url: referalLinkInput.value
             }).catch(console.error);
         } else {
             referalLinkInput.select();
             document.execCommand("copy");
-            alert("Ulashish funksiyasi mavjud emas. Havola nusxalandi!");
+            alert("Ulashish mavjud emas. Havola nusxalandi!");
         }
     });
 
@@ -624,21 +598,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // --- FAQ Accordion logic ---
+    // --- FAQ Accordion ---
     faqItems.forEach(item => {
         item.addEventListener('toggle', () => {
             const icon = item.querySelector('.faq-icon');
-            if (item.open) {
-                icon.textContent = '-';
-                faqItems.forEach(otherItem => {
-                    if (otherItem !== item && otherItem.open) {
-                        otherItem.open = false;
-                        otherItem.querySelector('.faq-icon').textContent = '+';
-                    }
-                });
-            } else {
-                icon.textContent = '+';
-            }
+            icon.textContent = item.open ? '-' : '+';
+            faqItems.forEach(other => {
+                if (other !== item && other.open) {
+                    other.open = false;
+                    other.querySelector('.faq-icon').textContent = '+';
+                }
+            });
         });
     });
 
@@ -651,9 +621,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     themeToggle.addEventListener('click', () => {
-        const htmlEl = document.documentElement;
-        htmlEl.classList.toggle('dark');
-        if (htmlEl.classList.contains('dark')) {
+        document.documentElement.classList.toggle('dark');
+        if (document.documentElement.classList.contains('dark')) {
             localStorage.setItem('theme', 'dark');
             sunIcon.classList.add('hidden');
             moonIcon.classList.remove('hidden');
@@ -664,10 +633,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // --- Initial load ---
-    activateButton('faqBtn');
-    showSection('faqSection');
+    // --- Default section ---
+    document.getElementById('faqBtn').classList.add('active');
+    document.getElementById('faqSection').classList.add('active');
 });
+
 </script>
 </body>
 </html>
