@@ -531,17 +531,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    const user = await fetchUserData(userId);
-    if (user && user.invite_link) {
-        referalLinkInput.value = user.invite_link;
-        referalLinkInput.disabled = true;
+    // `user` ma'lumotlarini faqat `userId` mavjud bo'lsa yuklaymiz.
+    if (userId) {
+        const user = await fetchUserData(userId);
+        if (user && user.invite_link) {
+            referalLinkInput.value = user.invite_link;
+            referalLinkInput.disabled = true;
+        } else {
+            referalLinkInput.value = user.error || "Referal havolasi topilmadi. Faqat Telegram Web App orqali foydalanuvchi ma'lumotlari yuklanadi.";
+            referalLinkInput.disabled = true;
+            copyBtn.disabled = true;
+            shareBtn.disabled = true;
+        }
     } else {
-        referalLinkInput.value = user.error || "Referal havolasi topilmadi. Faqat Telegram Web App orqali foydalanuvchi ma'lumotlari yuklanadi.";
+        referalLinkInput.value = "Referal havolasi topilmadi. Faqat Telegram Web App orqali foydalanuvchi ma'lumotlari yuklanadi.";
         referalLinkInput.disabled = true;
         copyBtn.disabled = true;
         shareBtn.disabled = true;
     }
 
+    // Bu qism har doim ishlaydi
     referralData = await fetchAllReferralData();
     renderReferralList(referralData, currentPage);
 
@@ -640,5 +649,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('faqSection').classList.add('active');
 });
 </script>
+
+
+
+
 </body>
 </html>
