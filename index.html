@@ -435,9 +435,10 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
-    // API server manzili (ngrok orqali olingan manzilni bu yerga qo'ying)
-    const API_BASE_URL = "http://localhost:8000"; // Lokal test uchun
-    // Agar serverni internetga ulagan bo'lsangiz: "https://<ngrok_id>.ngrok-free.app"
+    // API server manzili (Bu yerga sizning serveringiz joylashgan manzilni kiriting)
+    // Serveringizni brauzer orqali kirish mumkin bo'lgan ommaviy manzilga o'tkazganingizga ishonch hosil qiling
+    // Masalan: https://yoldataxi-api.onrender.com yoki https://<ngrok_id>.ngrok.io
+    const API_BASE_URL = "http://localhost:8000"; 
 
     const navButtons = document.querySelectorAll('.nav-btn');
     const sections = document.querySelectorAll('.section');
@@ -462,25 +463,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     let referalData = [];
     let telegramId = null;
 
-    // --- Fayllar, shartlar ---
-    // Faqat Telegram Web App orqali kirishni tekshirish
-    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+    // Telegram Web App muhitida ekanligini tekshirish
+    const isTelegramWebApp = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe;
+
+    if (isTelegramWebApp) {
         const userData = window.Telegram.WebApp.initDataUnsafe.user;
         if (userData && userData.id) {
             telegramId = userData.id;
         }
-    }
-
-    // Agar Telegram ID topilmasa, veb-ilovaning barcha kontentini o'chiradi
-    if (!telegramId) {
-        document.body.innerHTML = `
-            <div class="h-screen flex items-center justify-center text-center">
-                <p class="text-xl font-bold text-gray-800 dark:text-gray-200">
-                    Ilova faqat Telegram Web App orqali ishlaydi.
-                </p>
-            </div>
-        `;
-        return; // Qolgan kodni ishga tushirmaslik
     }
 
     // --- Functions ---
@@ -510,21 +500,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     async function fetchUserData(userId) {
+        if (!userId) {
+            return { error: "Foydalanuvchi ma'lumotlari mavjud emas." };
+        }
         try {
             const res = await fetch(`${API_BASE_URL}/user/${userId}`);
             if (!res.ok) {
-                const errorText = `Xato: Ma'lumot topilmadi. HTTP status: ${res.status}`;
-                referalLinkInput.value = errorText;
-                console.error(errorText);
-                return null;
+                return { error: `Xato: Ma'lumot topilmadi. HTTP status: ${res.status}` };
             }
             const data = await res.json();
             return data;
         } catch (err) {
-            const errorText = `Tarmoq xatosi: ${err.message}. Serverga ulanib bo'lmadi.`;
-            referalLinkInput.value = errorText;
-            console.error(errorText);
-            return null;
+            return { error: `Tarmoq xatosi: ${err.message}. Serverga ulanib bo'lmadi.` };
         }
     }
 
@@ -568,8 +555,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const user = await fetchUserData(telegramId);
     if (user && user.invite_link) {
         referalLinkInput.value = user.invite_link;
+        referalLinkInput.disabled = true; // Inputni o'chirish
     } else {
-        referalLinkInput.value = "Havola topilmadi yoki ma'lumotlar bazasida yo'qsiz.";
+        if (!isTelegramWebApp) {
+            referalLinkInput.value = "Referal havolasini olish uchun Telegram mini app orqali kiring.";
+            copyBtn.disabled = true;
+            shareBtn.disabled = true;
+        } else {
+            referalLinkInput.value = user.error || "Havola topilmadi yoki ma'lumotlar bazasida yo'qsiz.";
+        }
     }
 
     referalData = await fetchReferralData();
