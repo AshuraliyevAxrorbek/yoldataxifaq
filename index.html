@@ -467,23 +467,34 @@ document.addEventListener('DOMContentLoaded', async () => {
         navButtons.forEach(btn => btn.classList.remove('active'));
         document.getElementById(buttonId).classList.add('active');
     }
-    
-    async function fetchUserData() {
-        return { user_id: 'user123', username: 'john_doe', referal_points: 50 };
-    }
 
     async function fetchReferralData() {
         try {
-            const res = await fetch("http://localhost:8000/api/referrals"); 
+            const res = await fetch("http://localhost:8000/top-referrals"); // API manzilini to'g'irlash
             if (!res.ok) {
                 console.error("Failed to fetch referral data");
                 return [];
             }
             const data = await res.json();
-            return data.sort((a, b) => b.referrals_count - a.referrals_count);
+            return data.sort((a, b) => b.points - a.points); // Ballar bo'yicha saralash
         } catch (err) {
             console.error("Network error fetching referral data:", err);
             return [];
+        }
+    }
+
+    async function fetchUserData(userId) {
+        try {
+            const res = await fetch(`http://localhost:8000/user/${userId}`); // Haqiqiy foydalanuvchi IDsi bilan so'rov
+            if (!res.ok) {
+                console.error("Failed to fetch user data");
+                return null;
+            }
+            const data = await res.json();
+            return data;
+        } catch (err) {
+            console.error("Network error fetching user data:", err);
+            return null;
         }
     }
 
@@ -524,9 +535,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // --- Initial load logic ---
-    const user = await fetchUserData();
-    if (user) {
-        referalLinkInput.value = `https://t.me/YoldaTaxi_bot?start=${user.user_id}`;
+    const telegramId = "123456789"; // Bu yerga haqiqiy Telegram IDni joylashtiring
+    const user = await fetchUserData(telegramId);
+
+    if (user && user.invite_link) {
+        referalLinkInput.value = user.invite_link;
+    } else {
+        referalLinkInput.value = "Referal havolasi topilmadi.";
     }
 
     referalData = await fetchReferralData();
@@ -558,7 +573,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.execCommand("copy");
         alert("Havola nusxalandi!");
     });
-    
+
     shareBtn.addEventListener('click', () => {
         if (navigator.share) {
             navigator.share({
