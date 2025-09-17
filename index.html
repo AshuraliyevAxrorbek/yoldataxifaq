@@ -435,9 +435,9 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
-    // API server manzili
-    const API_BASE_URL = "http://localhost:8000";
+    const API_BASE_URL = "http://localhost:8000"; // Backend manzilingiz
 
+    // --- Elementlarni tanlash ---
     const navButtons = document.querySelectorAll('.nav-btn');
     const sections = document.querySelectorAll('.section');
     const promoBtnCheck = document.getElementById('promoBtnCheck');
@@ -459,43 +459,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentPage = 0;
     const itemsPerPage = 15;
     let referralData = [];
-    let userId = null;
 
-    if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id) {
-        userId = window.Telegram.WebApp.initDataUnsafe.user.id;
-    }
-
-    async function fetchUserData(id) {
-        if (!id) {
-            return { error: "Foydalanuvchi ma'lumotlari mavjud emas." };
-        }
-        try {
-            const res = await fetch(`${API_BASE_URL}/user/${id}`);
-            if (!res.ok) {
-                const errorData = await res.json();
-                return { error: errorData.detail || `Xato: Ma'lumot topilmadi (${res.status})` };
-            }
-            return await res.json();
-        } catch (err) {
-            return { error: `Tarmoq xatosi: ${err.message}. Serverga ulanib bo'lmadi.` };
-        }
-    }
-
+    // --- Barcha foydalanuvchilarni backenddan olish ---
     async function fetchAllReferralData() {
         try {
             const res = await fetch(`${API_BASE_URL}/top-referrals`);
-            if (!res.ok) {
-                console.error("Referral ma'lumotlarini olishda xato.");
-                return [];
-            }
+            if (!res.ok) throw new Error(`Xato: ${res.status}`);
             const data = await res.json();
+            // Agar invite_link bo‘lmasa, uni avtomatik yaratish
+            data.forEach(user => {
+                if (!user.invite_link) {
+                    user.invite_link = `https://t.me/YoldaTaxi_bot?start=${user.user_id || 0}`;
+                }
+            });
             return data.sort((a, b) => b.points - a.points);
         } catch (err) {
-            console.error("Tarmoq xatosi: referral ma'lumotlarini yuklab bo'lmadi:", err);
+            console.error("Referral ma'lumotlarini olishda xato:", err);
             return [];
         }
     }
 
+    // --- Referral list render qilish ---
     function renderReferralList(data, page) {
         referalList.innerHTML = '';
         const start = page * itemsPerPage;
@@ -531,29 +515,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    if (userId) {
-        const user = await fetchUserData(userId);
-        if (user && user.invite_link) {
-            referalLinkInput.value = user.invite_link;
-            referalLinkInput.disabled = true;
-        } else {
-            referalLinkInput.value = user.error || "Referal havolasi topilmadi. Faqat Telegram Web App orqali foydalanuvchi ma'lumotlari yuklanadi.";
-            referalLinkInput.disabled = true;
-            copyBtn.disabled = true;
-            shareBtn.disabled = true;
-        }
+    // --- Referral havolasini birinchi foydalanuvchidan olish ---
+    referralData = await fetchAllReferralData();
+    if (referralData.length > 0) {
+        referalLinkInput.value = referralData[0].invite_link;
+        referalLinkInput.disabled = true;
+        copyBtn.disabled = false;
+        shareBtn.disabled = false;
     } else {
-        referalLinkInput.value = "Referal havolasi topilmadi. Faqat Telegram Web App orqali foydalanuvchi ma'lumotlari yuklanadi.";
+        referalLinkInput.value = "❌ Referral havolasi topilmadi.";
         referalLinkInput.disabled = true;
         copyBtn.disabled = true;
         shareBtn.disabled = true;
     }
 
-    referralData = await fetchAllReferralData();
     renderReferralList(referralData, currentPage);
 
+    // --- Navigation tugmalari ---
     navButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('click', e => {
             const sectionId = e.currentTarget.id.replace('Btn', 'Section');
             navButtons.forEach(b => b.classList.remove('active'));
             e.currentTarget.classList.add('active');
@@ -562,6 +542,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
+    // --- Promo code ---
     promoBtnCheck.addEventListener('click', () => {
         const promoCode = promoInput.value.trim().toLowerCase();
         if (promoCode === 'yolda123') {
@@ -573,12 +554,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    // --- Copy / Share ---
     copyBtn.addEventListener('click', () => {
-        navigator.clipboard.writeText(referalLinkInput.value).then(() => {
-            alert("✅ Havola nusxalandi!");
-        }).catch(err => {
-            alert("Nusxalashda xato: " + err);
-        });
+        navigator.clipboard.writeText(referalLinkInput.value)
+            .then(() => alert("✅ Havola nusxalandi!"))
+            .catch(err => alert("Nusxalashda xato: " + err));
     });
 
     shareBtn.addEventListener('click', () => {
@@ -589,14 +569,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 url: referalLinkInput.value
             }).catch(console.error);
         } else {
-            navigator.clipboard.writeText(referalLinkInput.value).then(() => {
-                alert("✅ Havola nusxalandi!");
-            }).catch(err => {
-                alert("Ulashishda xato: " + err);
-            });
+            navigator.clipboard.writeText(referalLinkInput.value)
+                .then(() => alert("✅ Havola nusxalandi!"))
+                .catch(err => alert("Ulashishda xato: " + err));
         }
     });
 
+    // --- Pagination ---
     nextPageBtn.addEventListener('click', () => {
         if ((currentPage + 1) * itemsPerPage < referralData.length) {
             currentPage++;
@@ -611,6 +590,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    // --- FAQ Accordion ---
     faqItems.forEach(item => {
         item.addEventListener('toggle', () => {
             const icon = item.querySelector('.faq-icon');
@@ -624,6 +604,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
+    // --- Theme toggle ---
     const currentTheme = localStorage.getItem('theme');
     if (currentTheme === 'dark') {
         document.documentElement.classList.add('dark');
@@ -643,11 +624,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    // --- Default section ---
     document.getElementById('faqBtn').classList.add('active');
     document.getElementById('faqSection').classList.add('active');
 });
 </script>
-
 
 
 
