@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uz" class="light">
+<html lang="uz" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,17 +34,23 @@
         .dark .bg-gray-200 {
             background-color: #333;
         }
+        .bg-gray1 {
+            background-color: #f3f4f6;
+        }
         .dark .bg-gray1 {
-            background-color: #3a3a3a;
+            background-color: #252525;
+        }
+        .dark .bg-gray-800 {
+            background-color: #1a1a1a;
+        }
+        .dark .bg-gray-700 {
+            background-color: #252525;
         }
         .dark .text-gray-700 {
             color: #d1d5db;
         }
         .dark .text-gray-600 {
             color: #9ca3af;
-        }
-        .dark .shadow-xl {
-            box-shadow: 0 20px 25px -5px rgba(255, 255, 255, 0.1), 0 10px 10px -5px rgba(255, 255, 255, 0.04);
         }
         details > summary::-webkit-details-marker {
             display: none;
@@ -56,46 +62,36 @@
         details[open] .faq-arrow {
             transform: rotate(180deg);
         }
-        .group-card {
-            position: relative;
-            overflow: hidden;
-            border: 2px solid transparent;
-        }
-        .group-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -150%;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.4);
-            transition: left 0.5s ease-in-out;
-            transform: skewX(-20deg);
-        }
-        .group-card:hover::before {
-            left: 150%;
-        }
-        .dark .group-card::before {
-            background-image: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
-        }
         .table-buttons {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+        .nav-btn {
+            background-color: transparent;
+            color: #9ca3af;
+        }
+        .nav-btn.active {
+            background-color: #ffd700;
+            color: #1a1a1a;
+        }
+        .dark .nav-btn.active {
+            background-color: #ffd700;
+            color: #1a1a1a;
+        }
     </style>
 </head>
 <body class="bg-gray-100 transition-colors flex flex-col min-h-screen">
 
-    <div class="container bg-white shadow-xl flex-1 flex flex-col">
-        <header class="p-4 bg-white rounded-t-2xl shadow-sm sticky top-0 z-10 flex justify-between items-center">
+    <div class="container bg-white flex-1 flex flex-col dark:bg-gray-800">
+        <header class="p-4 bg-white rounded-t-2xl sticky top-0 z-10 flex justify-between items-center dark:bg-gray-800">
             <h1 class="text-3xl font-bold" style="color:#ffc107;">Yo'ldaTaxi</h1>
             <div class="flex items-center space-x-2">
                 <button id="themeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 transition-colors relative w-10 h-10 flex items-center justify-center">
-                    <svg id="moonIcon" class="w-6 h-6 text-gray-700 dark:text-gray-300 transition-transform hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg id="moonIcon" class="w-6 h-6 text-gray-700 dark:text-gray-300 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1112.21 3 7 7 0 0021 12.79z"></path>
                     </svg>
-                    <svg id="sunIcon" class="w-6 h-6 text-gray-700 dark:text-gray-300 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg id="sunIcon" class="w-6 h-6 text-gray-700 dark:text-gray-300 transition-transform hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="12" cy="12" r="5" stroke-linecap="round" stroke-linejoin="round"></circle>
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
                     </svg>
@@ -104,186 +100,179 @@
         </header>
 
         <main class="flex-1 p-4 overflow-y-auto pb-20">
-            <section id="groupSection" class="section">
-                <h2 class="text-3xl font-bold mb-8 text-center">Bizning Telegram guruhlarimiz</h2>
-                <div class="flex flex-col gap-6">
-                    <a href="https://t.me/Andijon_Toshkentga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 shadow-lg hover:shadow-xl relative">
-                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-yellow-400 to-gold text-gray-900 drop-shadow-md">Global</div>
-                        <div class="flex items-center space-x-6">
-                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/q7rCW5Tm/image.png" alt="Andijon Toshkent" class="w-full h-full object-cover"></div>
-                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Andijon - Toshkent</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
-                        </div>
-                    </a>
-                    <a href="https://t.me/Fargona_Toshkentga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 shadow-lg hover:shadow-xl relative">
-                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-yellow-400 to-gold text-gray-900 drop-shadow-md">Global</div>
-                        <div class="flex items-center space-x-6">
-                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/xC0MNFpk/image.png" alt="Farg'ona Toshkent" class="w-full h-full object-cover"></div>
-                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Farg'ona - Toshkent</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
-                        </div>
-                    </a>
-                    <a href="https://t.me/Namangan_Toshkentga_taxi" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 shadow-lg hover:shadow-xl relative">
-                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-yellow-400 to-gold text-gray-900 drop-shadow-md">Global</div>
-                        <div class="flex items-center space-x-6">
-                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/VLTqZgvT/image.png" alt="Namangan Toshkent" class="w-full h-full object-cover"></div>
-                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Namangan - Toshkent</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
-                        </div>
-                    </a>
-                    <a href="https://t.me/Samarqand_Toshkentga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 shadow-lg hover:shadow-xl relative">
-                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-yellow-400 to-gold text-gray-900 drop-shadow-md">Global</div>
-                        <div class="flex items-center space-x-6">
-                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/HxH44Lnk/image.png" alt="Samarqand Toshkent" class="w-full h-full object-cover"></div>
-                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Samarqand - Toshkent</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
-                        </div>
-                    </a>
-                    <a href="https://t.me/Jizzax_Toshkentga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 shadow-lg hover:shadow-xl relative">
-                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-yellow-400 to-gold text-gray-900 drop-shadow-md">Global</div>
-                        <div class="flex items-center space-x-6">
-                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/Fsj3rLxC/image.png" alt="Jizzax Toshkent" class="w-full h-full object-cover"></div>
-                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Jizzax - Toshkent</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
-                        </div>
-                    </a>
-                    <a href="https://t.me/Nukus_Toshkentga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 shadow-lg hover:shadow-xl relative">
-                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-yellow-400 to-gold text-gray-900 drop-shadow-md">Global</div>
-                        <div class="flex items-center space-x-6">
-                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/vZ2BbYCS/image.png" alt="Nukus - Toshkent" class="w-full h-full object-cover"></div>
-                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Nukus - Toshkent</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
-                        </div>
-                    </a>
-                    <a href="https://t.me/Xorazm_Toshkentga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 shadow-lg hover:shadow-xl relative">
-                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-yellow-400 to-gold text-gray-900 drop-shadow-md">Global</div>
-                        <div class="flex items-center space-x-6">
-                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/gjpcNn6r/image.png" alt="Xorazm - Toshkent" class="w-full h-full object-cover"></div>
-                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Xorazm - Toshkent</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
-                        </div>
-                    </a>
-                    <a href="https://t.me/Qashqadaryo_Toshkentga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 shadow-lg hover:shadow-xl relative">
-                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-yellow-400 to-gold text-gray-900 drop-shadow-md">Global</div>
-                        <div class="flex items-center space-x-6">
-                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/D0163YZB/image.png" alt="Qashqadaryo - Toshkent" class="w-full h-full object-cover"></div>
-                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Qashqadaryo - Toshkent</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
-                        </div>
-                    </a>
-                    <a href="https://t.me/Fargona_namanganga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 shadow-lg hover:shadow-xl relative">
-                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-yellow-400 to-gold text-gray-900 drop-shadow-md">Global</div>
-                        <div class="flex items-center space-x-6">
-                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/66h4FX6F/image.png" alt="Farg'ona - Namangan" class="w-full h-full object-cover"></div>
-                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Farg'ona - Namangan</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
-                        </div>
-                    </a>
-                    <a href="https://t.me/Surxon_Toshkentga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 shadow-lg hover:shadow-xl relative">
-                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-yellow-400 to-gold text-gray-900 drop-shadow-md">Global</div>
-                        <div class="flex items-center space-x-6">
-                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/MHG6hgd8/image.png" alt="Surxondaryo - Toshkent" class="w-full h-full object-cover"></div>
-                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Surxondaryo - Toshkent</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
-                        </div>
-                    </a>
-                    <a href="https://t.me/Qarshi_Andijonga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 shadow-lg hover:shadow-xl relative">
-                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-yellow-400 to-gold text-gray-900 drop-shadow-md">Global</div>
-                        <div class="flex items-center space-x-6">
-                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/TP7fntT7/image.png" alt="Qarshi - Andijon" class="w-full h-full object-cover"></div>
-                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Qarshi - Andijon</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
-                        </div>
-                    </a>
-                    <a href="https://t.me/Jizzax_Andijonga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 shadow-lg hover:shadow-xl relative">
-                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-yellow-400 to-gold text-gray-900 drop-shadow-md">Global</div>
-                        <div class="flex items-center space-x-6">
-                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/Fsj3rLxC/image.png" alt="Jizzax - Andijon" class="w-full h-full object-cover"></div>
-                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Jizzax - Andijon</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
-                        </div>
-                    </a>
+            <section id="faqSection" class="section active">
+                <h2 class="text-2xl font-bold mb-6 text-center">Tez-tez beriladigan savollar</h2>
+                <div class="space-y-4">
+                    <details class="faq-item bg-gray1 rounded-lg p-4 cursor-pointer">
+                        <summary class="flex items-center justify-between text-lg font-medium">
+                            <span class="flex items-center space-x-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                <span>Qanday viloyatlarga taxi buyurtma berish mumkin?</span>
+                            </span>
+                            <span class="faq-icon text-2xl leading-none transition-transform duration-300">+</span>
+                        </summary>
+                        <p class="mt-4 text-gray-700 leading-relaxed dark:text-gray-300">
+                            🟢 Javob: “Haydovchi topish” tugmasini bosing, keyin qayerdan qayerga borishingizni va yo‘lovchilar sonini belgilang. Haydovchi uchun izoh yozib, tasdiqlash tugmasini bosing. Shu bilan, haydovchilar o‘zi sizga bog‘lanadi.
+                        </p>
+                    </details>
+                    <details class="faq-item bg-gray1 rounded-lg p-4 cursor-pointer">
+                        <summary class="flex items-center justify-between text-lg font-medium">
+                            <span class="flex items-center space-x-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <span>Taxi buyurtmasini bekor qilish mumkinmi?</span>
+                            </span>
+                            <span class="faq-icon text-2xl leading-none transition-transform duration-300">+</span>
+                        </summary>
+                        <p class="mt-4 text-gray-700 leading-relaxed dark:text-gray-300">
+                            🟢 Javob: Ha, lekin hozircha bot orqali emas. Siz 24/7 qo‘llab-quvvatlash xizmatiga yozsangiz, buyurtmangiz darhol bekor qilinadi. Yoki birinchi bog‘langan haydovchiga xabar berib, buyurtmani bekor qilishingiz mumkin.
+                        </p>
+                    </details>
+                    <details class="faq-item bg-gray1 rounded-lg p-4 cursor-pointer">
+                        <summary class="flex items-center justify-between text-lg font-medium">
+                            <span class="flex items-center space-x-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 6l3 1m0 0l-3 9a5 5 0 00-2.427 4.995l.432 2.062M6 6l3.5-2m-3.5 2l1.5-2.5M6 6v3m4.5-4.5v10m-2 0h-2M9.5 21l-1.5-5m1.5 5v-5M13 10.5H9.5m4.5 4.5V10.5m0 0a2 2 0 012-2h2.5a2 2 0 012 2v2.5a2 2 0 01-2 2H15a2 2 0 01-2-2zm2.5-2h-2m-2 4.5h2m-2 0h-2M15 15h-2m-2 0h-2m-2 4.5h2m-2 0h-2m-2 4.5h2"></path></svg>
+                                <span>Do‘konim bor, doimiy pochta xizmatidan foydalanish mumkinmi?</span>
+                            </span>
+                            <span class="faq-icon text-2xl leading-none transition-transform duration-300">+</span>
+                        </summary>
+                        <p class="mt-4 text-gray-700 leading-relaxed dark:text-gray-300">
+                            🟢 Javob: Albatta! Biz do‘kon va biznes egalariga har qanday transportni — yengil mashinadan yuk mashinasigacha — topib bera olamiz. Doimiy pochta xizmatlari uchun maxsus chegirmalar mavjud. Xizmatdan foydalanish uchun supportga bog‘lanib ro‘yxatdan o‘ting yoki bot orqali kichik buyurtmalarni yuboring.
+                        </p>
+                    </details>
+                    <details class="faq-item bg-gray1 rounded-lg p-4 cursor-pointer">
+                        <summary class="flex items-center justify-between text-lg font-medium">
+                            <span class="flex items-center space-x-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <span>Buyurtma berdim, haydovchi qachon bog‘lanadi?</span>
+                            </span>
+                            <span class="faq-icon text-2xl leading-none transition-transform duration-300">+</span>
+                        </summary>
+                        <p class="mt-4 text-gray-700 leading-relaxed dark:text-gray-300">
+                            🟢 Javob: Buyurtmangiz tegishli haydovchilarga yuboriladi. Birinchi bo‘sh va yo‘nalishi mos haydovchi sizga bog‘lanadi. Odatda bu 5–15 daqiqa ichida sodir bo‘ladi.
+                        </p>
+                    </details>
+                    <details class="faq-item bg-gray1 rounded-lg p-4 cursor-pointer">
+                        <summary class="flex items-center justify-between text-lg font-medium">
+                            <span class="flex items-center space-x-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V9a1 1 0 00-1-1v-2a1 1 0 00-1-1v-2a1 1 0 00-1-1a1 1 0 00-1-1"></path></svg>
+                                <span>Taksi narxlari qancha bo'ladi?</span>
+                            </span>
+                            <span class="faq-icon text-2xl leading-none transition-transform duration-300">+</span>
+                        </summary>
+                        <p class="mt-4 text-gray-700 leading-relaxed dark:text-gray-300">
+                            🟢 Javob: Narxlar haydovchi bilan kelishuv asosida belgilanadi. Biz haydovchilarga iloji boricha hamyonbop narxlar taklif qilishni tavsiya qilamiz. Agar bir haydovchi biroz qimmat narx aytsa, keyingi haydovchi bilan bog‘lanishingiz mumkin.
+                        </p>
+                    </details>
+                    <details class="faq-item bg-gray1 rounded-lg p-4 cursor-pointer">
+                        <summary class="flex items-center justify-between text-lg font-medium">
+                            <span class="flex items-center space-x-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <span>Taxida qolib ketgan buyumlarni qanday qaytarib olish mumkin?</span>
+                            </span>
+                            <span class="faq-icon text-2xl leading-none transition-transform duration-300">+</span>
+                        </summary>
+                        <p class="mt-4 text-gray-700 leading-relaxed dark:text-gray-300">
+                            🟢 Javob: Agar taxi ichida buyum qoldirib ketgan bo‘lsangiz, qo‘llab-quvvatlash xizmatimizga murojaat qiling. Mashina rusumi, rangi, haydovchi ismi yoki mashina raqamini bulardan birini aytsangiz, biz haydovchini tezda topamiz. Buyum topilsa ham, ba’zi hollarda qo‘shimcha haydovchi haqqi bo‘lishi mumkin.
+                        </p>
+                    </details>
+                    <details class="faq-item bg-gray1 rounded-lg p-4 cursor-pointer">
+                        <summary class="flex items-center justify-between text-lg font-medium">
+                            <span class="flex items-center space-x-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 2a3 3 0 013-3h8a3 3 0 013 3v13a3 3 0 01-3 3h-8a3 3 0 01-3-3V2z" /><path d="M9 13a1 1 0 011-1h4a1 1 0 011 1v2a1 1 0 01-1 1h-4a1 1 0 01-1-1v-2z" /><path d="M12 11V6" /><path d="M10 8h4" /></svg>
+                                <span>Safar uchun mashinani qanday tanlash mumkin?</span>
+                            </span>
+                            <span class="faq-icon text-2xl leading-none transition-transform duration-300">+</span>
+                        </summary>
+                        <p class="mt-4 text-gray-700 leading-relaxed dark:text-gray-300">
+                            🟢 Javob: “Haydovchi topish” tugmasi orqali buyurtma berayotganda, izohga mashina rusumini yozing. Shunda faqat shu rusumdagi mashinalar haydovchilari sizga bog‘lanadi.
+                        </p>
+                    </details>
+                    <details class="faq-item bg-gray1 rounded-lg p-4 cursor-pointer">
+                        <summary class="flex items-center justify-between text-lg font-medium">
+                            <span class="flex items-center space-x-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                <span>YoldaTaxi qaysi viloyatlarda ishlaydi?</span>
+                            </span>
+                            <span class="faq-icon text-2xl leading-none transition-transform duration-300">+</span>
+                        </summary>
+                        <p class="mt-4 text-gray-700 leading-relaxed dark:text-gray-300">
+                            🟢 Javob: Hozircha biz Andijon, Namangan, Farg‘ona, Toshkent yo‘nalishlarida faol ishlaymiz. Agar siz boshqa viloyatdan bo‘lsangiz ham, haydovchilarimiz mavjud. Umuman, biz 12 viloyatgacha xizmat ko‘rsatamiz.
+                        </p>
+                    </details>
+                    <details class="faq-item bg-gray1 rounded-lg p-4 cursor-pointer">
+                        <summary class="flex items-center justify-between text-lg font-medium">
+                            <span class="flex items-center space-x-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.344 18c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                <span>Haydovchiga qanday shikoyat qilsa bo‘ladi?</span>
+                            </span>
+                            <span class="faq-icon text-2xl leading-none transition-transform duration-300">+</span>
+                        </summary>
+                        <p class="mt-4 text-gray-700 leading-relaxed dark:text-gray-300">
+                            🟢 Javob: Safar davomida haydovchi bilan tortishuv, sigaret chekishi, mashinaning iflosligi yoki boshqa muammolar bo‘lsa, qo‘llab-quvvatlash xizmatimizga murojaat qiling. Biz shikoyatni ko‘rib, haydovchiga tegishli choralarni ko‘ramiz.
+                        </p>
+                    </details>
+                    <details class="faq-item bg-gray1 rounded-lg p-4 cursor-pointer">
+                        <summary class="flex items-center justify-between text-lg font-medium">
+                            <span class="flex items-center space-x-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 12v10a1 1 0 001 1h3m10-3h-3a1 1 0 00-1 1v1a1 1 0 001 1h3a1 1 0 001-1v-1a1 1 0 00-1-1zM7 10v1a1 1 0 01-1 1H4a1 1 0 01-1-1v-1a1 1 0 011-1h2a1 1 0 011 1zm-2 2h4" /></svg>
+                                <span>Haydovchi meni uyimdan olib ketadimi?</span>
+                            </span>
+                            <span class="faq-icon text-2xl leading-none transition-transform duration-300">+</span>
+                        </summary>
+                        <p class="mt-4 text-gray-700 leading-relaxed dark:text-gray-300">
+                            🟢 Javob: Ha, odatda haydovchilar sizni uyingizdan yoki turgan joyingizdan olib ketadi. Ba’zi hollarda haydovchi markazga chiqishni so‘rashi mumkin, lekin ko‘p hollarda sizni uy manzilingizdan olib ketadi.
+                        </p>
+                    </details>
                 </div>
             </section>
 
             <section id="promoSection" class="section">
                 <h2 class="text-2xl font-bold mb-6 text-center">Promo va Yangiliklar</h2>
                 <div class="space-y-6">
-                    <div class="bg-gray1 rounded-2xl p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
+                    <div class="bg-gray1 rounded-2xl p-6">
                         <h3 class="text-xl font-bold mb-4 text-center">Promo kodni kiriting</h3>
                         <div class="flex flex-col items-center space-y-4">
-                            <input type="text" id="promoInput" placeholder="Promo kodni kiriting" class="w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-700">
-                            <button id="promoBtnCheck" class="w-full px-6 py-3 bg-yellow-400 text-gray-900 font-semibold rounded-xl hover:bg-yellow-500 transition-colors shadow-md">Tekshirish</button>
+                            <input type="text" id="promoInput" placeholder="Promo kodni kiriting" class="w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-800 text-black dark:text-white">
+                            <button id="promoBtnCheck" class="w-full px-6 py-3 bg-yellow-400 text-gray-900 font-semibold rounded-xl hover:bg-yellow-500 transition-colors">Tekshirish</button>
                             <p id="promoMessage" class="mt-4 text-center font-medium"></p>
                         </div>
                     </div>
-                    <div class="bg-gray1 rounded-2xl p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
+                    <div class="bg-gray1 rounded-2xl p-6">
                         <div class="flex items-center mb-4"><span class="promo-card-icon w-8 h-8 flex items-center justify-center text-2xl mr-4">🏆</span><h3 class="text-xl font-bold">Quizlarda qatnashing va yuting!</h3></div>
                         <p class="text-gray-700 leading-relaxed dark:text-gray-300">Telegramdagi rasmiy kanalimizda o'tkaziladigan quiz savollariga eng ko'p javob bergan foydalanuvchilar pul mukofoti olishlari mumkin.</p>
                     </div>
-                    <div class="bg-gray1 rounded-2xl p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
+                    <div class="bg-gray1 rounded-2xl p-6">
                         <div class="flex items-center mb-4"><span class="promo-card-icon w-8 h-8 flex items-center justify-center text-2xl mr-4">💰</span><h3 class="text-xl font-bold">Chegirmalarga ega bo'ling!</h3></div>
                         <p class="text-gray-700 leading-relaxed dark:text-gray-300">Telegram kanalimizda safarlar uchun 20-30%gacha chegirmali promokodlar muntazam berib boriladi, shuning uchun kanalimizga obuna bo'ling!</p>
                     </div>
-                    <div class="bg-gray1 rounded-2xl p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
+                    <div class="bg-gray1 rounded-2xl p-6">
                         <div class="flex items-center mb-4"><span class="promo-card-icon w-8 h-8 flex items-center justify-center text-2xl mr-4">🎁</span><h3 class="text-xl font-bold">Bonus ballar to'plang!</h3></div>
                         <p class="text-gray-700 leading-relaxed dark:text-gray-300">Har bir safardan so'ng bonus ballar to'plab boring va ularni keyingi safarlaringiz uchun to'lov sifatida ishlatishingiz mumkin.</p>
                     </div>
-                </div>
-            </section>
-
-            <section id="faqSection" class="section active">
-                <h2 class="text-2xl font-bold mb-6 text-center">Tez-tez beriladigan savollar</h2>
-                <div class="space-y-4">
-                    <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
-                        <summary class="flex items-center justify-between text-lg font-medium"><span class="flex items-center">🚖 Qanday viloyatlarga taxi buyurtma berish mumkin?</span><svg class="w-5 h-5 faq-arrow" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></summary>
-                        <p class="mt-4 text-gray-700 leading-relaxed">🟢 Javob: “Haydovchi topish” tugmasini bosing, keyin qayerdan qayerga borishingizni va yo‘lovchilar sonini belgilang. Haydovchi uchun izoh yozib, tasdiqlash tugmasini bosing. Shu bilan, haydovchilar o‘zi sizga bog‘lanadi.</p>
-                    </details>
-                    <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
-                        <summary class="flex items-center justify-between text-lg font-medium"><span class="flex items-center">❌ Taxi buyurtmasini bekor qilish mumkinmi?</span><svg class="w-5 h-5 faq-arrow" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></summary>
-                        <p class="mt-4 text-gray-700 leading-relaxed">🟢 Javob: Ha, lekin hozircha bot orqali emas. Siz 24/7 qo‘llab-quvvatlash xizmatiga yozsangiz, buyurtmangiz darhol bekor qilinadi. Yoki birinchi bog‘langan haydovchiga xabar berib, buyurtmani bekor qilishingiz mumkin.</p>
-                    </details>
-                    <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
-                        <summary class="flex items-center justify-between text-lg font-medium"><span class="flex items-center">🏪 Do‘konim bor, doimiy pochta xizmatidan foydalanish mumkinmi?</span><svg class="w-5 h-5 faq-arrow" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></summary>
-                        <p class="mt-4 text-gray-700 leading-relaxed">🟢 Javob: Albatta! Biz do‘kon va biznes egalariga har qanday transportni — yengil mashinadan yuk mashinasigacha — topib bera olamiz. Doimiy pochta xizmatlari uchun maxsus chegirmalar mavjud. Xizmatdan foydalanish uchun supportga bog‘lanib ro‘yxatdan o‘ting yoki bot orqali kichik buyurtmalarni yuboring.</p>
-                    </details>
-                    <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
-                        <summary class="flex items-center justify-between text-lg font-medium"><span class="flex items-center">⏱️ Buyurtma berdim, haydovchi qachon bog‘lanadi?</span><svg class="w-5 h-5 faq-arrow" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></summary>
-                        <p class="mt-4 text-gray-700 leading-relaxed">🟢 Javob: Buyurtmangiz tegishli haydovchilarga yuboriladi. Birinchi bo‘sh va yo‘nalishi mos haydovchi sizga bog‘lanadi. Odatda bu 5–15 daqiqa ichida sodir bo‘ladi.</p>
-                    </details>
-                    <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
-                        <summary class="flex items-center justify-between text-lg font-medium"><span class="flex items-center">💰 Taksi narxlari qancha bo'ladi?</span><svg class="w-5 h-5 faq-arrow" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></summary>
-                        <p class="mt-4 text-gray-700 leading-relaxed">🟢 Javob: Narxlar haydovchi bilan kelishuv asosida belgilanadi. Biz haydovchilarga iloji boricha hamyonbop narxlar taklif qilishni tavsiya qilamiz. Agar bir haydovchi biroz qimmat narx aytsa, keyingi haydovchi bilan bog‘lanishingiz mumkin.</p>
-                    </details>
-                    <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
-                        <summary class="flex items-center justify-between text-lg font-medium"><span class="flex items-center">🎒 Taxida qolib ketgan buyumlarni qanday qaytarib olish mumkin?</span><svg class="w-5 h-5 faq-arrow" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></summary>
-                        <p class="mt-4 text-gray-700 leading-relaxed">🟢 Javob: Agar taxi ichida buyum qoldirib ketgan bo‘lsangiz, qo‘llab-quvvatlash xizmatimizga murojaat qiling. Mashina rusumi, rangi, haydovchi ismi yoki mashina raqamini bulardan birini aytsangiz, biz haydovchini tezda topamiz. Buyum topilsa ham, ba’zi hollarda qo‘shimcha haydovchi haqqi bo‘lishi mumkin.</p>
-                    </details>
-                    <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
-                        <summary class="flex items-center justify-between text-lg font-medium"><span class="flex items-center">🚗 Safar uchun mashinani qanday tanlash mumkin?</span><svg class="w-5 h-5 faq-arrow" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></summary>
-                        <p class="mt-4 text-gray-700 leading-relaxed">🟢 Javob: “Haydovchi topish” tugmasi orqali buyurtma berayotganda, izohga mashina rusumini yozing. Shunda faqat shu rusumdagi mashinalar haydovchilari sizga bog‘lanadi.</p>
-                    </details>
-                    <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
-                        <summary class="flex items-center justify-between text-lg font-medium"><span class="flex items-center">📍 YoldaTaxi qaysi viloyatlarda ishlaydi?</span><svg class="w-5 h-5 faq-arrow" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></summary>
-                        <p class="mt-4 text-gray-700 leading-relaxed">🟢 Javob: Hozircha biz Andijon, Namangan, Farg‘ona, Toshkent yo‘nalishlarida faol ishlaymiz. Agar siz boshqa viloyatdan bo‘lsangiz ham, haydovchilarimiz mavjud. Umuman, biz 12 viloyatgacha xizmat ko‘rsatamiz.</p>
-                    </details>
-                    <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
-                        <summary class="flex items-center justify-between text-lg font-medium"><span class="flex items-center">⚠️ Haydovchiga qanday shikoyat qilsa bo‘ladi?</span><svg class="w-5 h-5 faq-arrow" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></summary>
-                        <p class="mt-4 text-gray-700 leading-relaxed">🟢 Javob: Safar davomida haydovchi bilan tortishuv, sigaret chekishi, mashinaning iflosligi yoki boshqa muammolar bo‘lsa, qo‘llab-quvvatlash xizmatiga murojaat qiling. Biz shikoyatni ko‘rib, haydovchiga tegishli choralarni ko‘ramiz.</p>
-                    </details>
-                    <details class="bg-gray1 rounded-lg p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
-                        <summary class="flex items-center justify-between text-lg font-medium"><span class="flex items-center">🏠 Haydovchi meni uyimdan olib ketadimi?</span><svg class="w-5 h-5 faq-arrow" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></summary>
-                        <p class="mt-4 text-gray-700 leading-relaxed">🟢 Javob: Ha, odatda haydovchilar sizni uyingizdan yoki turgan joyingizdan olib ketadi. Ba’zi hollarda haydovchi markazga chiqishni so‘rashi mumkin, lekin ko‘p hollarda sizni uy manzilingizdan olib ketadi.</p>
-                    </details>
                 </div>
             </section>
             
             <section id="referalSection" class="section">
                 <h2 class="text-2xl font-bold mb-6 text-center">Do'stlaringizni taklif qiling</h2>
                 <div class="space-y-6">
-                    <div class="bg-gray1 rounded-2xl p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
+                    <div class="bg-gray1 rounded-2xl p-6">
                         <div class="flex items-center mb-4"><span class="promo-card-icon w-8 h-8 flex items-center justify-center text-2xl mr-4">🤝</span><h3 class="text-xl font-bold">Referal dasturi</h3></div>
                         <p class="text-gray-700 leading-relaxed dark:text-gray-300">Do'stingizni bizning ilovamizga taklif qiling va uning birinchi safaridan so'ng sizga **5 bal** beriladi. Har bir taklif qilgan do'stingiz uchun ballaringiz ko'payadi. Yakunida esa ballaringizni pulga almashtirishingiz mumkin bo'ladi.</p>
-                        <div class="mt-4 bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-sm">
-                            <input type="text" id="referalLink" class="w-full px-4 py-3 text-sm focus:outline-none bg-transparent text-black dark:text-gray-300" value="https://t.me/YoldaTaxi_bot?start=user_referal_id" readonly>
-                        </div>
-                        <button id="copyBtn" class="w-full mt-4 px-6 py-3 bg-yellow-400 text-gray-900 font-semibold rounded-xl hover:bg-yellow-500 transition-colors shadow-md">
-                             <span class="flex items-center justify-center space-x-2">
+                        <div class="mt-4 bg-white dark:bg-gray-800 rounded-xl overflow-hidden flex items-center">
+                            <input type="text" id="referalLink" class="flex-1 px-4 py-3 text-sm focus:outline-none bg-transparent text-black dark:text-gray-300" value="" readonly>
+                            <button id="copyBtn" class="px-4 py-3 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-300 font-semibold transition-colors hover:bg-gray-300 dark:hover:bg-gray-600">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" /><path d="M6 3a1 1 0 011-1h.01L7 3h.01a1 1 0 01-1 1H6a1 1 0 011-1zm0 4a1 1 0 011-1h.01L7 7h.01a1 1 0 01-1 1h-1a1 1 0 01-1 1z" /><path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-3a1 1 0 110-2h3a4 4 0 014 4v10a4 4 0 01-4 4H4a4 4 0 01-4-4V6a4 4 0 014-4h3a1 1 0 110 2H4z" clip-rule="evenodd" /><path d="M8 7a1 1 0 011-1h.01L9 7h.01a1 1 0 01-1 1z" /></svg>
-                                <span>Nusxalash</span>
+                            </button>
+                        </div>
+                        <button id="shareBtn" class="w-full mt-4 px-6 py-3 bg-yellow-400 text-gray-900 font-semibold rounded-xl hover:bg-yellow-500 transition-colors">
+                            <span class="flex items-center justify-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.883 12.872 9 12.443 9 12c0-.443-.117-.872-.316-1.342m-.762 2.684a2.522 2.522 0 01-2.482 2.684c-1.385 0-2.502-1.074-2.502-2.4c0-1.326 1.117-2.4 2.502-2.4a2.522 2.522 0 012.482 2.684zm11.488 0a2.522 2.522 0 01-2.482 2.684c-1.385 0-2.502-1.074-2.502-2.4c0-1.326 1.117-2.4 2.502-2.4a2.522 2.522 0 012.482 2.684zm-4.996-2.684a2.522 2.522 0 01-2.482 2.684c-1.385 0-2.502-1.074-2.502-2.4c0-1.326 1.117-2.4 2.502-2.4a2.522 2.522 0 012.482 2.684z" /></svg>
+                                <span>Ulashish</span>
                             </span>
                         </button>
                     </div>
                     
-                    <div class="bg-gray1 rounded-2xl p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:transform hover:translate-y-[-2px]">
+                    <div class="bg-gray1 rounded-2xl p-6">
                         <h3 class="text-xl font-bold mb-4 text-center">Top 15 referalchilar</h3>
                         <table class="w-full text-left table-auto">
                             <thead>
@@ -295,7 +284,7 @@
                                 </tr>
                             </thead>
                             <tbody id="referalList">
-                                </tbody>
+                            </tbody>
                         </table>
                         <div id="paginationButtons" class="table-buttons mt-4 hidden">
                             <button id="prevPageBtn" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
@@ -315,29 +304,136 @@
                     </div>
                 </div>
             </section>
+
+            <section id="groupSection" class="section">
+                <h2 class="text-3xl font-bold mb-8 text-center">Bizning Telegram guruhlarimiz</h2>
+                <div class="flex flex-col gap-6">
+                    <a href="https://t.me/Andijon_Toshkentga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 relative">
+                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-yellow-400 text-gray-900">Global</div>
+                        <div class="flex items-center space-x-6">
+                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/q7rCW5Tm/image.png" alt="Andijon Toshkent" class="w-full h-full object-cover"></div>
+                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Andijon - Toshkent</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
+                        </div>
+                    </a>
+                    <a href="https://t.me/Fargona_Toshkentga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 relative">
+                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-yellow-400 text-gray-900">Global</div>
+                        <div class="flex items-center space-x-6">
+                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/xC0MNFpk/image.png" alt="Farg'ona Toshkent" class="w-full h-full object-cover"></div>
+                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Farg'ona - Toshkent</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
+                        </div>
+                    </a>
+                    <a href="https://t.me/Namangan_Toshkentga_taxi" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 relative">
+                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-yellow-400 text-gray-900">Global</div>
+                        <div class="flex items-center space-x-6">
+                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/VLTqZgvT/image.png" alt="Namangan Toshkent" class="w-full h-full object-cover"></div>
+                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Namangan - Toshkent</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
+                        </div>
+                    </a>
+                    <a href="https://t.me/Samarqand_Toshkentga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 relative">
+                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-yellow-400 text-gray-900">Global</div>
+                        <div class="flex items-center space-x-6">
+                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/HxH44Lnk/image.png" alt="Samarqand Toshkent" class="w-full h-full object-cover"></div>
+                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Samarqand - Toshkent</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
+                        </div>
+                    </a>
+                    <a href="https://t.me/Jizzax_Toshkentga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 relative">
+                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-yellow-400 text-gray-900">Global</div>
+                        <div class="flex items-center space-x-6">
+                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/Fsj3rLxC/image.png" alt="Jizzax Toshkent" class="w-full h-full object-cover"></div>
+                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Jizzax - Toshkent</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
+                        </div>
+                    </a>
+                    <a href="https://t.me/Nukus_Toshkentga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 relative">
+                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-yellow-400 text-gray-900">Global</div>
+                        <div class="flex items-center space-x-6">
+                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/vZ2BbYCS/image.png" alt="Nukus - Toshkent" class="w-full h-full object-cover"></div>
+                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Nukus - Toshkent</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
+                        </div>
+                    </a>
+                    <a href="https://t.me/Xorazm_Toshkentga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 relative">
+                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-yellow-400 text-gray-900">Global</div>
+                        <div class="flex items-center space-x-6">
+                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/gjpcNn6r/image.png" alt="Xorazm - Toshkent" class="w-full h-full object-cover"></div>
+                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Xorazm - Toshkent</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
+                        </div>
+                    </a>
+                    <a href="https://t.me/Qashqadaryo_Toshkentga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 relative">
+                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-yellow-400 text-gray-900">Global</div>
+                        <div class="flex items-center space-x-6">
+                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/D0163YZB/image.png" alt="Qashqadaryo - Toshkent" class="w-full h-full object-cover"></div>
+                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Qashqadaryo - Toshkent</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
+                        </div>
+                    </a>
+                    <a href="https://t.me/Fargona_namanganga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 relative">
+                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-yellow-400 text-gray-900">Global</div>
+                        <div class="flex items-center space-x-6">
+                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/66h4FX6F/image.png" alt="Farg'ona - Namangan" class="w-full h-full object-cover"></div>
+                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Farg'ona - Namangan</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
+                        </div>
+                    </a>
+                    <a href="https://t.me/Surxon_Toshkentga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 relative">
+                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-yellow-400 text-gray-900">Global</div>
+                        <div class="flex items-center space-x-6">
+                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/MHG6hgd8/image.png" alt="Surxondaryo - Toshkent" class="w-full h-full object-cover"></div>
+                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Surxondaryo - Toshkent</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
+                        </div>
+                    </a>
+                    <a href="https://t.me/Qarshi_Andijonga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 relative">
+                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-yellow-400 text-gray-900">Global</div>
+                        <div class="flex items-center space-x-6">
+                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/TP7fntT7/image.png" alt="Qarshi - Andijon" class="w-full h-full object-cover"></div>
+                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Qarshi - Andijon</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
+                        </div>
+                    </a>
+                    <a href="https://t.me/Jizzax_Andijonga" target="_blank" class="group-card block bg-gray1 rounded-2xl p-6 relative">
+                        <div class="absolute top-4 right-4 text-xs font-bold px-3 py-1 rounded-full bg-yellow-400 text-gray-900">Global</div>
+                        <div class="flex items-center space-x-6">
+                            <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0"><img src="https://i.postimg.cc/Fsj3rLxC/image.png" alt="Jizzax - Andijon" class="w-full h-full object-cover"></div>
+                            <div class="flex-1"><h3 class="text-xl font-bold mb-1">Jizzax - Andijon</h3><p class="text-gray-600 dark:text-gray-300 text-sm">Guruhga qo'shilish uchun bosing</p></div>
+                        </div>
+                    </a>
+                </div>
+            </section>
         </main>
     </div>
 
-    <nav class="fixed bottom-0 left-0 right-0 p-2 bg-white shadow-lg z-20 flex justify-between items-center w-full rounded-t-2xl">
-        <button id="groupBtn" class="nav-btn flex-1 min-w-[80px] flex flex-col items-center justify-center gap-1 py-1 px-1 text-xs font-semibold transition-all duration-300 rounded-lg text-gray-400">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-current" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="8.5" cy="7" r="4" /><path d="M20 8v6M23 11h-6" /></svg>
-            <span>Guruh</span>
-        </button>
-        <button id="promoBtn" class="nav-btn flex-1 min-w-[80px] flex flex-col items-center justify-center gap-1 py-1 px-1 text-xs font-semibold transition-all duration-300 rounded-lg text-gray-400">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-current" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 01-8 0" /></svg>
-            <span>Aksiya</span>
-        </button>
-        <button id="faqBtn" class="nav-btn flex-1 min-w-[80px] flex flex-col items-center justify-center gap-1 py-1 px-1 text-xs font-semibold transition-all duration-300 rounded-lg text-gray-400">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-current" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.09 11.25a3 3 0 011.08 3.54L10 16" /><path d="M12.01 19.5V20" /><path d="M11 15h.01" /><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><path d="M12 8v2" /></svg>
+    <nav class="fixed bottom-0 left-0 right-0 p-2 bg-white z-20 flex justify-between items-center w-full rounded-t-2xl dark:bg-gray-800">
+        <button id="faqBtn" class="nav-btn flex-1 min-w-[80px] flex flex-col items-center justify-center gap-1 py-1 px-1 text-xs font-semibold transition-all duration-300 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-current" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9.09 11.25a3 3 0 011.08 3.54L10 16"></path>
+                <path d="M12.01 19.5V20"></path>
+                <path d="M11 15h.01"></path>
+                <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                <path d="M12 8v2"></path>
+            </svg>
             <span>Savollar</span>
         </button>
-        <button id="referalBtn" class="nav-btn flex-1 min-w-[80px] flex flex-col items-center justify-center gap-1 py-1 px-1 text-xs font-semibold transition-all duration-300 rounded-lg text-gray-400">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-current" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 19.5a2.5 2.5 0 01-5 0 2.5 2.5 0 01-5 0" /><path d="M5 19.5v-2c0-2.2 1.8-4 4-4s4 1.8 4 4v2" /><path d="M12 11.5a2.5 2.5 0 01-5 0 2.5 2.5 0 01-5 0" /><path d="M5 11.5v-2c0-2.2 1.8-4 4-4s4 1.8 4 4v2" /><path d="M12 11.5v-2c0-2.2 1.8-4 4-4s4 1.8 4 4v2" /><path d="M17 19.5v-2c0-2.2 1.8-4 4-4s4 1.8 4 4v2" /></svg>
+        <button id="promoBtn" class="nav-btn flex-1 min-w-[80px] flex flex-col items-center justify-center gap-1 py-1 px-1 text-xs font-semibold transition-all duration-300 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-current" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a10 10 0 1010 10A10 10 0 0012 2z"></path>
+                <path d="M12 16a4 4 0 004-4H8a4 4 0 004 4z"></path>
+            </svg>
+            <span>Aksiya</span>
+        </button>
+        <button id="referalBtn" class="nav-btn flex-1 min-w-[80px] flex flex-col items-center justify-center gap-1 py-1 px-1 text-xs font-semibold transition-all duration-300 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-current" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07L11.5 8.5"></path>
+                <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07L12.5 15.5"></path>
+            </svg>
             <span>Referal</span>
+        </button>
+        <button id="groupBtn" class="nav-btn flex-1 min-w-[80px] flex flex-col items-center justify-center gap-1 py-1 px-1 text-xs font-semibold transition-all duration-300 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-current" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 00-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 010 7.75"></path>
+            </svg>
+            <span>Guruh</span>
         </button>
     </nav>
 
- <script>
+<script>
 document.addEventListener('DOMContentLoaded', async () => {
     const navButtons = document.querySelectorAll('.nav-btn');
     const sections = document.querySelectorAll('.section');
@@ -354,9 +450,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const prevPageBtn = document.getElementById('prevPageBtn');
     const paginationButtonsContainer = document.getElementById('paginationButtons');
     const noDataMessage = document.getElementById('noDataMessage');
+    const shareBtn = document.getElementById('shareBtn');
+    const faqItems = document.querySelectorAll('.faq-item');
 
     let currentPage = 0;
     const itemsPerPage = 15;
+    let referalData = [];
 
     // --- Functions ---
     function showSection(sectionId) {
@@ -365,42 +464,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function activateButton(buttonId) {
-        navButtons.forEach(btn => {
-            btn.classList.remove('text-black', 'bg-[#ffd000]');
-            btn.classList.add('text-gray-400');
-        });
-        const button = document.getElementById(buttonId);
-        button.classList.add('text-black', 'bg-[#ffd000]');
-        button.classList.remove('text-gray-400');
+        navButtons.forEach(btn => btn.classList.remove('active'));
+        document.getElementById(buttonId).classList.add('active');
+    }
+    
+    async function fetchUserData() {
+        return { user_id: 'user123', username: 'john_doe', referal_points: 50 };
     }
 
-    async function fetchUser(user_id) {
+    async function fetchReferralData() {
         try {
-            const res = await fetch(`/user/${user_id}`);
-            if (!res.ok) return null;
-            return await res.json();
-        } catch (err) {
-            console.error(err);
-            return null;
-        }
-    }
-
-    async function loadReferals() {
-        try {
-            const res = await fetch("/top-referrals");
-            const data = await res.json();
-
-            if (!data.length) {
-                noDataMessage.classList.remove('hidden');
-                paginationButtonsContainer.classList.add('hidden');
-                return;
-            } else {
-                noDataMessage.classList.add('hidden');
+            const res = await fetch("http://localhost:8000/api/referrals"); 
+            if (!res.ok) {
+                console.error("Failed to fetch referral data");
+                return [];
             }
-
-            renderReferalList(data, currentPage);
+            const data = await res.json();
+            return data.sort((a, b) => b.referrals_count - a.referrals_count);
         } catch (err) {
-            console.error(err);
+            console.error("Network error fetching referral data:", err);
+            return [];
         }
     }
 
@@ -410,12 +493,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         const end = Math.min(start + itemsPerPage, data.length);
         const paginatedItems = data.slice(start, end);
 
+        if (paginatedItems.length === 0) {
+            noDataMessage.classList.remove('hidden');
+            paginationButtonsContainer.classList.add('hidden');
+            return;
+        }
+
+        noDataMessage.classList.add('hidden');
+
         paginatedItems.forEach((user, index) => {
             const row = document.createElement('tr');
             row.className = 'border-b border-gray-200 dark:border-gray-700';
             row.innerHTML = `
                 <td class="py-2 px-1 text-sm">${start + index + 1}</td>
-                <td class="py-2 px-1 text-sm">${user.username}</td>
+                <td class="py-2 px-1 text-sm">${user.username || 'Anonim'}</td>
                 <td class="py-2 px-1 text-sm">${user.referrals_count}</td>
                 <td class="py-2 px-1 text-sm">${user.points}</td>
             `;
@@ -423,19 +514,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         paginationButtonsContainer.classList.remove('hidden');
-        prevPageBtn.classList.toggle('hidden', currentPage === 0);
-        nextPageBtn.classList.toggle('hidden', end >= data.length);
+        prevPageBtn.disabled = currentPage === 0;
+        nextPageBtn.disabled = end >= data.length;
+        prevPageBtn.classList.toggle('opacity-50', prevPageBtn.disabled);
+        nextPageBtn.classList.toggle('opacity-50', nextPageBtn.disabled);
         if (data.length <= itemsPerPage) {
             paginationButtonsContainer.classList.add('hidden');
         }
     }
 
-    // --- Current User ID (backenddan olish) ---
-    const currentUserId = 12345; // sessiya yoki token orqali backenddan olishingiz mumkin
-    const user = await fetchUser(currentUserId);
+    // --- Initial load logic ---
+    const user = await fetchUserData();
     if (user) {
         referalLinkInput.value = `https://t.me/YoldaTaxi_bot?start=${user.user_id}`;
     }
+
+    referalData = await fetchReferralData();
+    renderReferalList(referalData, currentPage);
 
     // --- Event Listeners ---
     navButtons.forEach(button => {
@@ -463,15 +558,51 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.execCommand("copy");
         alert("Havola nusxalandi!");
     });
-
-    nextPageBtn.addEventListener('click', async () => {
-        currentPage++;
-        await loadReferals();
+    
+    shareBtn.addEventListener('click', () => {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Yo\'ldaTaxi',
+                text: 'Yo\'ldaTaxi ilovasini sinab ko\'ring! Bu bilan safarlaringiz yanada oson va arzon bo\'ladi.',
+                url: referalLinkInput.value
+            }).catch(console.error);
+        } else {
+            referalLinkInput.select();
+            document.execCommand("copy");
+            alert("Ulashish funksiyasi mavjud emas. Havola nusxalandi!");
+        }
     });
 
-    prevPageBtn.addEventListener('click', async () => {
-        currentPage--;
-        await loadReferals();
+    nextPageBtn.addEventListener('click', () => {
+        if ((currentPage + 1) * itemsPerPage < referalData.length) {
+            currentPage++;
+            renderReferalList(referalData, currentPage);
+        }
+    });
+
+    prevPageBtn.addEventListener('click', () => {
+        if (currentPage > 0) {
+            currentPage--;
+            renderReferalList(referalData, currentPage);
+        }
+    });
+
+    // --- FAQ Accordion logic ---
+    faqItems.forEach(item => {
+        item.addEventListener('toggle', () => {
+            const icon = item.querySelector('.faq-icon');
+            if (item.open) {
+                icon.textContent = '-';
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item && otherItem.open) {
+                        otherItem.open = false;
+                        otherItem.querySelector('.faq-icon').textContent = '+';
+                    }
+                });
+            } else {
+                icon.textContent = '+';
+            }
+        });
     });
 
     // --- Theme toggle ---
@@ -484,23 +615,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     themeToggle.addEventListener('click', () => {
         const htmlEl = document.documentElement;
+        htmlEl.classList.toggle('dark');
         if (htmlEl.classList.contains('dark')) {
-            htmlEl.classList.remove('dark');
-            localStorage.setItem('theme', 'light');
-            sunIcon.classList.remove('hidden');
-            moonIcon.classList.add('hidden');
-        } else {
-            htmlEl.classList.add('dark');
             localStorage.setItem('theme', 'dark');
             sunIcon.classList.add('hidden');
             moonIcon.classList.remove('hidden');
+        } else {
+            localStorage.setItem('theme', 'light');
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
         }
     });
 
     // --- Initial load ---
     activateButton('faqBtn');
     showSection('faqSection');
-    await loadReferals();
 });
 </script>
 </body>
