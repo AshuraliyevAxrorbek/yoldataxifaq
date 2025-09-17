@@ -435,45 +435,55 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
-    const API_BASE_URL = "http://localhost:8000"; // FastAPI manzilingiz
+    const API_BASE_URL = "http://localhost:8000"; // Backend manzilingiz
 
-    const referalLinkInput = document.getElementById('referalLink');
+    // --- Elementlarni tanlash ---
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const sections = document.querySelectorAll('.section');
+    const promoBtnCheck = document.getElementById('promoBtnCheck');
+    const promoInput = document.getElementById('promoInput');
+    const promoMessage = document.getElementById('promoMessage');
+    const themeToggle = document.getElementById('themeToggle');
+    const sunIcon = document.getElementById('sunIcon');
+    const moonIcon = document.getElementById('moonIcon');
     const copyBtn = document.getElementById('copyBtn');
     const shareBtn = document.getElementById('shareBtn');
+    const referalLinkInput = document.getElementById('referalLink');
     const referalList = document.getElementById('referalList');
     const nextPageBtn = document.getElementById('nextPageBtn');
     const prevPageBtn = document.getElementById('prevPageBtn');
-    const paginationContainer = document.getElementById('paginationButtons');
+    const paginationButtonsContainer = document.getElementById('paginationButtons');
     const noDataMessage = document.getElementById('noDataMessage');
+    const faqItems = document.querySelectorAll('.faq-item');
 
-    const itemsPerPage = 15;
     let currentPage = 0;
+    const itemsPerPage = 15;
     let referralData = [];
 
-    // --- Telegram WebApp yoki query param orqali user_id olish ---
-    let userId = null;
-    if (window.Telegram && window.Telegram.WebApp) {
-        const user = window.Telegram.WebApp.initDataUnsafe.user;
-        if (user && user.id) {
-            userId = user.id;
-        }
-    }
-
-    // Agar query param orqali kelsa
-    if (!userId) {
+    // --- Foydalanuvchi ID ni URL query yoki Telegram WebApp orqali olish ---
+    function getQueryParam(param) {
         const urlParams = new URLSearchParams(window.location.search);
-        userId = urlParams.get('user_id');
+        return urlParams.get(param);
     }
 
-    // --- Foydalanuvchi ma'lumotlarini olish ---
-    async function fetchUserData(id) {
-        if (!id) return { error: "Foydalanuvchi ID topilmadi. WebApp yoki URL query orqali uzatilmagan." };
+    let userId = getQueryParam('user_id');
+
+    if (!userId && window.Telegram?.WebApp?.initDataUnsafe?.user?.id) {
+        userId = window.Telegram.WebApp.initDataUnsafe.user.id;
+    }
+
+    // --- Foydalanuvchi ma'lumotlarini backenddan olish ---
+    async function fetchUserData(userId) {
+        if (!userId) return { error: "Foydalanuvchi ID topilmadi. User_id URL queryda yoki Telegram WebApp orqali uzatilmagan." };
         try {
-            const res = await fetch(`${API_BASE_URL}/user/${id}`);
-            if (!res.ok) return { error: `Foydalanuvchi topilmadi (status ${res.status})` };
+            const res = await fetch(`${API_BASE_URL}/user/${userId}`);
+            if (!res.ok) {
+                const errorText = await res.json();
+                return { error: errorText.detail || `Xato: Ma'lumot topilmadi (${res.status})` };
+            }
             return await res.json();
         } catch (err) {
-            return { error: `Serverga ulanib bo‘lmadi: ${err.message}` };
+            return { error: `Tarmoq xatosi: ${err.message}` };
         }
     }
 
@@ -483,13 +493,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             const res = await fetch(`${API_BASE_URL}/top-referrals`);
             if (!res.ok) return [];
             const data = await res.json();
-            return data.sort((a,b) => b.points - a.points);
+            return data.sort((a, b) => b.points - a.points);
         } catch (err) {
-            console.error(err);
+            console.error("Network error fetching referral data:", err);
             return [];
         }
     }
 
+    // --- Referral list render qilish ---
     function renderReferralList(data, page) {
         referalList.innerHTML = '';
         const start = page * itemsPerPage;
@@ -498,34 +509,41 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (paginatedItems.length === 0) {
             noDataMessage.classList.remove('hidden');
-            paginationContainer.classList.add('hidden');
+            paginationButtonsContainer.classList.add('hidden');
             return;
         }
         noDataMessage.classList.add('hidden');
 
         paginatedItems.forEach((user, index) => {
             const row = document.createElement('tr');
+            row.className = 'border-b border-gray-200 dark:border-gray-700';
             row.innerHTML = `
-                <td>${start + index + 1}</td>
-                <td>${user.username || 'Anonim'}</td>
-                <td>${user.referrals_count || 0}</td>
-                <td>${user.points || 0}</td>
+                <td class="py-2 px-1 text-sm">${start + index + 1}</td>
+                <td class="py-2 px-1 text-sm">${user.username || 'Anonim'}</td>
+                <td class="py-2 px-1 text-sm">${user.referrals_count}</td>
+                <td class="py-2 px-1 text-sm">${user.points}</td>
             `;
             referalList.appendChild(row);
         });
 
-        paginationContainer.classList.remove('hidden');
+        paginationButtonsContainer.classList.remove('hidden');
         prevPageBtn.disabled = currentPage === 0;
         nextPageBtn.disabled = end >= data.length;
+        prevPageBtn.classList.toggle('opacity-50', prevPageBtn.disabled);
+        nextPageBtn.classList.toggle('opacity-50', nextPageBtn.disabled);
+        if (data.length <= itemsPerPage) {
+            paginationButtonsContainer.classList.add('hidden');
+        }
     }
 
-    // --- Initial load ---
+    // --- Foydalanuvchi ma'lumotlarini yuklash ---
     const user = await fetchUserData(userId);
     if (user && user.invite_link) {
         referalLinkInput.value = user.invite_link;
         referalLinkInput.disabled = true;
     } else {
-        referalLinkInput.value = user?.error || "Havola topilmadi.";
+        referalLinkInput.value = user.error || "Havola topilmadi.";
+        referalLinkInput.disabled = true;
         copyBtn.disabled = true;
         shareBtn.disabled = true;
     }
@@ -533,24 +551,49 @@ document.addEventListener('DOMContentLoaded', async () => {
     referralData = await fetchReferralData();
     renderReferralList(referralData, currentPage);
 
-    // --- Copy/Share funksiyalari ---
+    // --- Navigation tugmalari ---
+    navButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const sectionId = e.currentTarget.id.replace('Btn', 'Section');
+            navButtons.forEach(b => b.classList.remove('active'));
+            e.currentTarget.classList.add('active');
+            sections.forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+        });
+    });
+
+    // --- Promo code ---
+    promoBtnCheck.addEventListener('click', () => {
+        const promoCode = promoInput.value.trim().toLowerCase();
+        if (promoCode === 'yolda123') {
+            promoMessage.textContent = '✅ Promokod muvaffaqiyatli qabul qilindi! Keyingi safari uchun 20% chegirma taqdim etiladi.';
+            promoMessage.style.color = 'green';
+        } else {
+            promoMessage.textContent = '❌ Notoʻgʻri promokod. Iltimos, qayta urinib koʻring.';
+            promoMessage.style.color = 'red';
+        }
+    });
+
+    // --- Copy / Share ---
     copyBtn.addEventListener('click', () => {
         referalLinkInput.select();
-        document.execCommand("copy");
-        alert("Havola nusxalandi!");
+        navigator.clipboard.writeText(referalLinkInput.value).then(() => {
+            alert("✅ Havola nusxalandi!");
+        });
     });
 
     shareBtn.addEventListener('click', () => {
         if (navigator.share) {
             navigator.share({
                 title: "Yo'ldaTaxi",
-                text: "Yo'ldaTaxi ilovasini sinab ko‘ring!",
+                text: "Yo'ldaTaxi ilovasini sinab ko'ring!",
                 url: referalLinkInput.value
             }).catch(console.error);
         } else {
             referalLinkInput.select();
-            document.execCommand("copy");
-            alert("Ulashish mavjud emas. Havola nusxalandi!");
+            navigator.clipboard.writeText(referalLinkInput.value).then(() => {
+                alert("✅ Havola nusxalandi!");
+            });
         }
     });
 
@@ -569,6 +612,43 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    // --- FAQ Accordion ---
+    faqItems.forEach(item => {
+        item.addEventListener('toggle', () => {
+            const icon = item.querySelector('.faq-icon');
+            icon.textContent = item.open ? '-' : '+';
+            faqItems.forEach(other => {
+                if (other !== item && other.open) {
+                    other.open = false;
+                    other.querySelector('.faq-icon').textContent = '+';
+                }
+            });
+        });
+    });
+
+    // --- Theme toggle ---
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        if (document.documentElement.classList.contains('dark')) {
+            localStorage.setItem('theme', 'dark');
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+        } else {
+            localStorage.setItem('theme', 'light');
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+        }
+    });
+
+    // --- Default section ---
+    document.getElementById('faqBtn').classList.add('active');
+    document.getElementById('faqSection').classList.add('active');
 });
 </script>
 
