@@ -458,24 +458,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentPage = 0;
     const itemsPerPage = 15;
     let referalData = [];
+    let userId = null;
 
-    // --- Query param orqali user_id olish ---
-    function getQueryParam(param) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(param);
+    // --- Telegram WebApp orqali user_id olish ---
+    const isTelegramWebApp = window.Telegram?.WebApp?.initDataUnsafe;
+    if (isTelegramWebApp) {
+        const userData = window.Telegram.WebApp.initDataUnsafe.user;
+        if (userData && userData.id) userId = userData.id;
     }
 
-    const userId = getQueryParam('user_id');
+    // --- Query param orqali user_id olish (fallback) ---
+    if (!userId) {
+        const urlParams = new URLSearchParams(window.location.search);
+        userId = urlParams.get('user_id');
+    }
 
     // --- Foydalanuvchi ma'lumotlarini backenddan olish ---
     async function fetchUserData(userId) {
-        if (!userId) return { error: "Foydalanuvchi ma'lumotlari mavjud emas." };
+        if (!userId) return { error: "Foydalanuvchi ID topilmadi. User_id URL queryda yoki Telegram WebApp orqali uzatilmagan." };
         try {
             const res = await fetch(`${API_BASE_URL}/user/${userId}`);
-            if (!res.ok) return { error: `Xato: Ma'lumot topilmadi (${res.status})` };
+            if (!res.ok) return { error: `Backenddan foydalanuvchi ma'lumotini olish xatosi. Status: ${res.status}` };
             return await res.json();
         } catch (err) {
-            return { error: `Tarmoq xatosi: ${err.message}` };
+            return { error: `Tarmoq xatosi: ${err.message}. Serverga ulanib bo'lmadi.` };
         }
     }
 
@@ -523,9 +529,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         nextPageBtn.disabled = end >= data.length;
         prevPageBtn.classList.toggle('opacity-50', prevPageBtn.disabled);
         nextPageBtn.classList.toggle('opacity-50', nextPageBtn.disabled);
-        if (data.length <= itemsPerPage) {
-            paginationButtonsContainer.classList.add('hidden');
-        }
+        if (data.length <= itemsPerPage) paginationButtonsContainer.classList.add('hidden');
     }
 
     // --- Load initial data ---
@@ -534,7 +538,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         referalLinkInput.value = user.invite_link;
         referalLinkInput.disabled = true;
     } else {
-        referalLinkInput.value = user?.error || "Havola topilmadi.";
+        referalLinkInput.value = user?.error || "Referral havolani olishda noma'lum xato yuz berdi.";
         copyBtn.disabled = true;
         shareBtn.disabled = true;
     }
@@ -542,7 +546,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     referalData = await fetchReferralData();
     renderReferalList(referalData, currentPage);
 
-    // --- Event listeners ---
+    // --- Navigation ---
     navButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
             const sectionId = e.currentTarget.id.replace('Btn', 'Section');
@@ -553,6 +557,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
+    // --- Promo code ---
     promoBtnCheck.addEventListener('click', () => {
         const promoCode = promoInput.value.trim().toLowerCase();
         if (promoCode === 'yolda123') {
@@ -564,12 +569,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    // --- Copy referral ---
     copyBtn.addEventListener('click', () => {
         referalLinkInput.select();
         document.execCommand("copy");
-        alert("Havola nusxalandi!");
+        alert("✅ Havola nusxalandi!");
     });
 
+    // --- Share referral ---
     shareBtn.addEventListener('click', () => {
         if (navigator.share) {
             navigator.share({
@@ -584,13 +591,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    // --- Pagination ---
     nextPageBtn.addEventListener('click', () => {
         if ((currentPage + 1) * itemsPerPage < referalData.length) {
             currentPage++;
             renderReferalList(referalData, currentPage);
         }
     });
-
     prevPageBtn.addEventListener('click', () => {
         if (currentPage > 0) {
             currentPage--;
@@ -637,7 +644,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('faqBtn').classList.add('active');
     document.getElementById('faqSection').classList.add('active');
 });
-
 </script>
+
 </body>
 </html>
