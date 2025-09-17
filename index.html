@@ -470,13 +470,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function fetchReferralData() {
         try {
-            const res = await fetch("http://localhost:8000/top-referrals"); // API manzilini to'g'irlash
+            const res = await fetch("http://localhost:8000/top-referrals");
             if (!res.ok) {
                 console.error("Failed to fetch referral data");
                 return [];
             }
             const data = await res.json();
-            return data.sort((a, b) => b.points - a.points); // Ballar bo'yicha saralash
+            return data.sort((a, b) => b.points - a.points);
         } catch (err) {
             console.error("Network error fetching referral data:", err);
             return [];
@@ -485,15 +485,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function fetchUserData(userId) {
         try {
-            const res = await fetch(`http://localhost:8000/user/${userId}`); // Haqiqiy foydalanuvchi IDsi bilan so'rov
+            const res = await fetch(`http://localhost:8000/user/${userId}`);
             if (!res.ok) {
-                console.error("Failed to fetch user data");
+                const errorText = `Xato: Ma'lumot topilmadi. HTTP status: ${res.status}`;
+                referalLinkInput.value = errorText;
+                console.error(errorText);
                 return null;
             }
             const data = await res.json();
+            if (data && data.error) {
+                const errorText = `Xato: ${data.error}. Ma'lumotlar bazasida foydalanuvchi yo'q.`;
+                referalLinkInput.value = errorText;
+                console.error(errorText);
+                return null;
+            }
             return data;
         } catch (err) {
-            console.error("Network error fetching user data:", err);
+            const errorText = `Tarmoq xatosi: ${err.message}. Server bilan bog'lanib bo'lmadi.`;
+            referalLinkInput.value = errorText;
+            console.error(errorText);
             return null;
         }
     }
@@ -535,13 +545,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // --- Initial load logic ---
-    const telegramId = "123456789"; // Bu yerga haqiqiy Telegram IDni joylashtiring
-    const user = await fetchUserData(telegramId);
+    let telegramId = null;
 
-    if (user && user.invite_link) {
-        referalLinkInput.value = user.invite_link;
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+        const userData = window.Telegram.WebApp.initDataUnsafe.user;
+        if (userData) {
+            telegramId = userData.id;
+        }
+    }
+
+    if (telegramId) {
+        const user = await fetchUserData(telegramId);
+        if (user && user.invite_link) {
+            referalLinkInput.value = user.invite_link;
+        } else {
+            referalLinkInput.value = "Referal havolasi topilmadi. Ma'lumotlaringiz yangilanmagan bo'lishi mumkin.";
+        }
     } else {
-        referalLinkInput.value = "Referal havolasi topilmadi.";
+        referalLinkInput.value = "Foydalanuvchi ma'lumotlarini olishning iloji bo'lmadi. Iltimos, ilovaga Telegram orqali kiring.";
     }
 
     referalData = await fetchReferralData();
