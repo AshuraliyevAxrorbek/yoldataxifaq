@@ -435,6 +435,11 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
+    // API server manzili (Bu yerga sizning serveringiz joylashgan manzilni kiriting)
+    // agar lokalda ishlatsangiz: "http://localhost:8000"
+    // agar ngrok orqali ishlatsangiz: "https://<ngrok_id>.ngrok.io"
+    const API_BASE_URL = "http://localhost:8000"; 
+
     const navButtons = document.querySelectorAll('.nav-btn');
     const sections = document.querySelectorAll('.section');
     const promoBtnCheck = document.getElementById('promoBtnCheck');
@@ -456,6 +461,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentPage = 0;
     const itemsPerPage = 15;
     let referalData = [];
+    let telegramId = null;
+
+    // --- Fayllar, shartlar ---
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+        const userData = window.Telegram.WebApp.initDataUnsafe.user;
+        if (userData && userData.id) {
+            telegramId = userData.id;
+        }
+    }
+
+    if (!telegramId) {
+        referalLinkInput.value = "Faqat Telegram orqali kirish mumkin!";
+        // Sayt kontentini yashirish yoki o'chirish
+        document.body.innerHTML = `
+            <div class="h-screen flex items-center justify-center text-center">
+                <p class="text-xl font-bold text-gray-800 dark:text-gray-200">
+                    Ilova faqat Telegram Web App orqali ishlaydi.
+                </p>
+            </div>
+        `;
+        return; // Qolgan kodni ishga tushirmaslik
+    }
 
     // --- Functions ---
     function showSection(sectionId) {
@@ -470,7 +497,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function fetchReferralData() {
         try {
-            const res = await fetch("http://localhost:8000/top-referrals");
+            const res = await fetch(`${API_BASE_URL}/top-referrals`);
             if (!res.ok) {
                 console.error("Failed to fetch referral data");
                 return [];
@@ -485,7 +512,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function fetchUserData(userId) {
         try {
-            const res = await fetch(`http://localhost:8000/user/${userId}`);
+            const res = await fetch(`${API_BASE_URL}/user/${userId}`);
             if (!res.ok) {
                 const errorText = `Xato: Ma'lumot topilmadi. HTTP status: ${res.status}`;
                 referalLinkInput.value = errorText;
@@ -493,15 +520,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return null;
             }
             const data = await res.json();
-            if (data && data.error) {
-                const errorText = `Xato: ${data.error}. Ma'lumotlar bazasida foydalanuvchi yo'q.`;
-                referalLinkInput.value = errorText;
-                console.error(errorText);
-                return null;
-            }
             return data;
         } catch (err) {
-            const errorText = `Tarmoq xatosi: ${err.message}. Server bilan bog'lanib bo'lmadi.`;
+            const errorText = `Tarmoq xatosi: ${err.message}. Serverga ulanib bo'lmadi.`;
             referalLinkInput.value = errorText;
             console.error(errorText);
             return null;
@@ -545,24 +566,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // --- Initial load logic ---
-    let telegramId = null;
-
-    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
-        const userData = window.Telegram.WebApp.initDataUnsafe.user;
-        if (userData) {
-            telegramId = userData.id;
-        }
-    }
-
-    if (telegramId) {
-        const user = await fetchUserData(telegramId);
-        if (user && user.invite_link) {
-            referalLinkInput.value = user.invite_link;
-        } else {
-            referalLinkInput.value = "Referal havolasi topilmadi. Ma'lumotlaringiz yangilanmagan bo'lishi mumkin.";
-        }
+    const user = await fetchUserData(telegramId);
+    if (user && user.invite_link) {
+        referalLinkInput.value = user.invite_link;
     } else {
-        referalLinkInput.value = "Foydalanuvchi ma'lumotlarini olishning iloji bo'lmadi. Iltimos, ilovaga Telegram orqali kiring.";
+        referalLinkInput.value = "Havola topilmadi yoki ma'lumotlar bazasida yo'qsiz.";
     }
 
     referalData = await fetchReferralData();
