@@ -435,10 +435,9 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
-    // API server manzili (Bu yerga sizning serveringiz joylashgan manzilni kiriting)
-    // agar lokalda ishlatsangiz: "http://localhost:8000"
-    // agar ngrok orqali ishlatsangiz: "https://<ngrok_id>.ngrok.io"
-    const API_BASE_URL = "http://localhost:8000"; 
+    // API server manzili (ngrok orqali olingan manzilni bu yerga qo'ying)
+    const API_BASE_URL = "http://localhost:8000"; // Lokal test uchun
+    // Agar serverni internetga ulagan bo'lsangiz: "https://<ngrok_id>.ngrok-free.app"
 
     const navButtons = document.querySelectorAll('.nav-btn');
     const sections = document.querySelectorAll('.section');
@@ -464,6 +463,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let telegramId = null;
 
     // --- Fayllar, shartlar ---
+    // Faqat Telegram Web App orqali kirishni tekshirish
     if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
         const userData = window.Telegram.WebApp.initDataUnsafe.user;
         if (userData && userData.id) {
@@ -471,9 +471,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    // Agar Telegram ID topilmasa, veb-ilovaning barcha kontentini o'chiradi
     if (!telegramId) {
-        referalLinkInput.value = "Faqat Telegram orqali kirish mumkin!";
-        // Sayt kontentini yashirish yoki o'chirish
         document.body.innerHTML = `
             <div class="h-screen flex items-center justify-center text-center">
                 <p class="text-xl font-bold text-gray-800 dark:text-gray-200">
