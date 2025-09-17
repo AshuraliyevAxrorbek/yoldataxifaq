@@ -435,53 +435,45 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
-    const API_BASE_URL = "http://localhost:8000"; // Backend manzilingiz
+    const API_BASE_URL = "http://localhost:8000"; // FastAPI manzilingiz
 
-    const navButtons = document.querySelectorAll('.nav-btn');
-    const sections = document.querySelectorAll('.section');
-    const promoBtnCheck = document.getElementById('promoBtnCheck');
-    const promoInput = document.getElementById('promoInput');
-    const promoMessage = document.getElementById('promoMessage');
-    const themeToggle = document.getElementById('themeToggle');
-    const sunIcon = document.getElementById('sunIcon');
-    const moonIcon = document.getElementById('moonIcon');
+    const referalLinkInput = document.getElementById('referalLink');
     const copyBtn = document.getElementById('copyBtn');
     const shareBtn = document.getElementById('shareBtn');
-    const referalLinkInput = document.getElementById('referalLink');
     const referalList = document.getElementById('referalList');
     const nextPageBtn = document.getElementById('nextPageBtn');
     const prevPageBtn = document.getElementById('prevPageBtn');
-    const paginationButtonsContainer = document.getElementById('paginationButtons');
+    const paginationContainer = document.getElementById('paginationButtons');
     const noDataMessage = document.getElementById('noDataMessage');
-    const faqItems = document.querySelectorAll('.faq-item');
 
-    let currentPage = 0;
     const itemsPerPage = 15;
-    let referalData = [];
-    let userId = null;
+    let currentPage = 0;
+    let referralData = [];
 
-    // --- Telegram WebApp orqali user_id olish ---
-    const isTelegramWebApp = window.Telegram?.WebApp?.initDataUnsafe;
-    if (isTelegramWebApp) {
-        const userData = window.Telegram.WebApp.initDataUnsafe.user;
-        if (userData && userData.id) userId = userData.id;
+    // --- Telegram WebApp yoki query param orqali user_id olish ---
+    let userId = null;
+    if (window.Telegram && window.Telegram.WebApp) {
+        const user = window.Telegram.WebApp.initDataUnsafe.user;
+        if (user && user.id) {
+            userId = user.id;
+        }
     }
 
-    // --- Query param orqali user_id olish (fallback) ---
+    // Agar query param orqali kelsa
     if (!userId) {
         const urlParams = new URLSearchParams(window.location.search);
         userId = urlParams.get('user_id');
     }
 
-    // --- Foydalanuvchi ma'lumotlarini backenddan olish ---
-    async function fetchUserData(userId) {
-        if (!userId) return { error: "Foydalanuvchi ID topilmadi. User_id URL queryda yoki Telegram WebApp orqali uzatilmagan." };
+    // --- Foydalanuvchi ma'lumotlarini olish ---
+    async function fetchUserData(id) {
+        if (!id) return { error: "Foydalanuvchi ID topilmadi. WebApp yoki URL query orqali uzatilmagan." };
         try {
-            const res = await fetch(`${API_BASE_URL}/user/${userId}`);
-            if (!res.ok) return { error: `Backenddan foydalanuvchi ma'lumotini olish xatosi. Status: ${res.status}` };
+            const res = await fetch(`${API_BASE_URL}/user/${id}`);
+            if (!res.ok) return { error: `Foydalanuvchi topilmadi (status ${res.status})` };
             return await res.json();
         } catch (err) {
-            return { error: `Tarmoq xatosi: ${err.message}. Serverga ulanib bo'lmadi.` };
+            return { error: `Serverga ulanib bo‘lmadi: ${err.message}` };
         }
     }
 
@@ -491,15 +483,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             const res = await fetch(`${API_BASE_URL}/top-referrals`);
             if (!res.ok) return [];
             const data = await res.json();
-            return data.sort((a, b) => b.points - a.points);
+            return data.sort((a,b) => b.points - a.points);
         } catch (err) {
-            console.error("Network error fetching referral data:", err);
+            console.error(err);
             return [];
         }
     }
 
-    // --- Render referal list ---
-    function renderReferalList(data, page) {
+    function renderReferralList(data, page) {
         referalList.innerHTML = '';
         const start = page * itemsPerPage;
         const end = Math.min(start + itemsPerPage, data.length);
@@ -507,81 +498,53 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (paginatedItems.length === 0) {
             noDataMessage.classList.remove('hidden');
-            paginationButtonsContainer.classList.add('hidden');
+            paginationContainer.classList.add('hidden');
             return;
         }
         noDataMessage.classList.add('hidden');
 
         paginatedItems.forEach((user, index) => {
             const row = document.createElement('tr');
-            row.className = 'border-b border-gray-200 dark:border-gray-700';
             row.innerHTML = `
-                <td class="py-2 px-1 text-sm">${start + index + 1}</td>
-                <td class="py-2 px-1 text-sm">${user.username || 'Anonim'}</td>
-                <td class="py-2 px-1 text-sm">${user.referrals_count}</td>
-                <td class="py-2 px-1 text-sm">${user.points}</td>
+                <td>${start + index + 1}</td>
+                <td>${user.username || 'Anonim'}</td>
+                <td>${user.referrals_count || 0}</td>
+                <td>${user.points || 0}</td>
             `;
             referalList.appendChild(row);
         });
 
-        paginationButtonsContainer.classList.remove('hidden');
+        paginationContainer.classList.remove('hidden');
         prevPageBtn.disabled = currentPage === 0;
         nextPageBtn.disabled = end >= data.length;
-        prevPageBtn.classList.toggle('opacity-50', prevPageBtn.disabled);
-        nextPageBtn.classList.toggle('opacity-50', nextPageBtn.disabled);
-        if (data.length <= itemsPerPage) paginationButtonsContainer.classList.add('hidden');
     }
 
-    // --- Load initial data ---
+    // --- Initial load ---
     const user = await fetchUserData(userId);
     if (user && user.invite_link) {
         referalLinkInput.value = user.invite_link;
         referalLinkInput.disabled = true;
     } else {
-        referalLinkInput.value = user?.error || "Referral havolani olishda noma'lum xato yuz berdi.";
+        referalLinkInput.value = user?.error || "Havola topilmadi.";
         copyBtn.disabled = true;
         shareBtn.disabled = true;
     }
 
-    referalData = await fetchReferralData();
-    renderReferalList(referalData, currentPage);
+    referralData = await fetchReferralData();
+    renderReferralList(referralData, currentPage);
 
-    // --- Navigation ---
-    navButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const sectionId = e.currentTarget.id.replace('Btn', 'Section');
-            navButtons.forEach(b => b.classList.remove('active'));
-            e.currentTarget.classList.add('active');
-            sections.forEach(s => s.classList.remove('active'));
-            document.getElementById(sectionId).classList.add('active');
-        });
-    });
-
-    // --- Promo code ---
-    promoBtnCheck.addEventListener('click', () => {
-        const promoCode = promoInput.value.trim().toLowerCase();
-        if (promoCode === 'yolda123') {
-            promoMessage.textContent = '✅ Promokod muvaffaqiyatli qabul qilindi! Keyingi safari uchun 20% chegirma taqdim etiladi.';
-            promoMessage.style.color = 'green';
-        } else {
-            promoMessage.textContent = '❌ Notoʻgʻri promokod. Iltimos, qayta urinib koʻring.';
-            promoMessage.style.color = 'red';
-        }
-    });
-
-    // --- Copy referral ---
+    // --- Copy/Share funksiyalari ---
     copyBtn.addEventListener('click', () => {
         referalLinkInput.select();
         document.execCommand("copy");
-        alert("✅ Havola nusxalandi!");
+        alert("Havola nusxalandi!");
     });
 
-    // --- Share referral ---
     shareBtn.addEventListener('click', () => {
         if (navigator.share) {
             navigator.share({
                 title: "Yo'ldaTaxi",
-                text: "Yo'ldaTaxi ilovasini sinab ko'ring!",
+                text: "Yo'ldaTaxi ilovasini sinab ko‘ring!",
                 url: referalLinkInput.value
             }).catch(console.error);
         } else {
@@ -593,58 +556,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- Pagination ---
     nextPageBtn.addEventListener('click', () => {
-        if ((currentPage + 1) * itemsPerPage < referalData.length) {
+        if ((currentPage + 1) * itemsPerPage < referralData.length) {
             currentPage++;
-            renderReferalList(referalData, currentPage);
+            renderReferralList(referralData, currentPage);
         }
     });
+
     prevPageBtn.addEventListener('click', () => {
         if (currentPage > 0) {
             currentPage--;
-            renderReferalList(referalData, currentPage);
+            renderReferralList(referralData, currentPage);
         }
     });
 
-    // --- FAQ Accordion ---
-    faqItems.forEach(item => {
-        item.addEventListener('toggle', () => {
-            const icon = item.querySelector('.faq-icon');
-            icon.textContent = item.open ? '-' : '+';
-            faqItems.forEach(other => {
-                if (other !== item && other.open) {
-                    other.open = false;
-                    other.querySelector('.faq-icon').textContent = '+';
-                }
-            });
-        });
-    });
-
-    // --- Theme toggle ---
-    const currentTheme = localStorage.getItem('theme');
-    if (currentTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-        sunIcon.classList.add('hidden');
-        moonIcon.classList.remove('hidden');
-    }
-
-    themeToggle.addEventListener('click', () => {
-        document.documentElement.classList.toggle('dark');
-        if (document.documentElement.classList.contains('dark')) {
-            localStorage.setItem('theme', 'dark');
-            sunIcon.classList.add('hidden');
-            moonIcon.classList.remove('hidden');
-        } else {
-            localStorage.setItem('theme', 'light');
-            sunIcon.classList.remove('hidden');
-            moonIcon.classList.add('hidden');
-        }
-    });
-
-    // --- Default section ---
-    document.getElementById('faqBtn').classList.add('active');
-    document.getElementById('faqSection').classList.add('active');
 });
 </script>
+
 
 
 </body>
